@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkinSense Report</title>
+    <title>SkinSense AI Report</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
-<body>
-    <header class="site-header">
+<body class="dashboard-body">
+    <header class="site-header dashboard-nav">
         <a class="brand" th:href="@{/}" aria-label="SkinSense home">
             <span class="brand-mark" aria-hidden="true">
                 <svg viewBox="0 0 28 28" role="img">
@@ -18,107 +19,252 @@
             <span>SkinSense</span>
         </a>
         <nav class="header-actions" aria-label="Report navigation">
-            <a th:href="@{/}">New Assessment</a>
+            <a th:href="@{/}"><i class="bi bi-arrow-left"></i> New Assessment</a>
         </nav>
     </header>
 
-    <main class="report-page">
-        <section class="report-hero">
-            <p class="eyebrow">Personalized report</p>
-            <h1>Your SkinSense Results</h1>
-            <p th:text="${report.skinSummary}">Skin summary appears here.</p>
-        </section>
-
-        <section class="report-section">
-            <h2>Morning Routine</h2>
-            <div class="report-grid">
-                <article class="report-card" th:each="step : ${report.morningRoutine}">
-                    <h3 th:text="${step.stepName}">Step Name</h3>
-                    <p><strong>Ingredients:</strong> <span th:text="${step.recommendedIngredients}">Ingredients</span></p>
-                    <p><strong>Product:</strong> <span th:text="${step.suggestedProducts}">Product</span></p>
-                    <p><strong>Brand:</strong> <span th:text="${step.brand}">Brand</span></p>
-                    <p><strong>Price:</strong> <span th:text="${step.approximatePriceCategory}">Price</span></p>
-                    <p th:text="${step.scientificReasoning}">Reasoning</p>
-                </article>
-            </div>
-        </section>
-
-        <section class="report-section">
-            <h2>Night Routine</h2>
-            <div class="report-grid">
-                <article class="report-card" th:each="step : ${report.nightRoutine}">
-                    <h3 th:text="${step.stepName}">Step Name</h3>
-                    <p><strong>Ingredients:</strong> <span th:text="${step.recommendedIngredients}">Ingredients</span></p>
-                    <p><strong>Product:</strong> <span th:text="${step.suggestedProducts}">Product</span></p>
-                    <p><strong>Brand:</strong> <span th:text="${step.brand}">Brand</span></p>
-                    <p><strong>Price:</strong> <span th:text="${step.approximatePriceCategory}">Price</span></p>
-                    <p th:text="${step.scientificReasoning}">Reasoning</p>
-                </article>
-            </div>
-        </section>
-
-        <section class="report-section two-column-report">
+    <main class="report-dashboard">
+        <section class="dashboard-hero">
             <div>
-                <h2>Ingredients To Look For</h2>
-                <article class="report-card compact-report-card" th:each="ingredient : ${report.ingredientsToUse}">
-                    <h3 th:text="${ingredient.ingredient}">Ingredient</h3>
-                    <p th:text="${ingredient.explanation}">Explanation</p>
+                <span class="completion-pill"><i class="bi bi-check2-circle"></i> Analysis Complete</span>
+                <h1>SkinSense AI Report</h1>
+                <p>Personalized skincare recommendations generated using Gemini AI.</p>
+            </div>
+
+            <div class="summary-badges" aria-label="Assessment summary">
+                <article class="summary-badge">
+                    <i class="bi bi-droplet-half"></i>
+                    <span>Skin Type</span>
+                    <strong th:text="${assessment != null ? assessment.displaySkinType : 'Not provided'}">Combination</strong>
                 </article>
-            </div>
-            <div>
-                <h2>Ingredients To Avoid</h2>
-                <article class="report-card compact-report-card" th:each="ingredient : ${report.ingredientsToAvoid}">
-                    <h3 th:text="${ingredient.ingredient}">Ingredient</h3>
-                    <p th:text="${ingredient.explanation}">Explanation</p>
+                <article class="summary-badge">
+                    <i class="bi bi-shield-check"></i>
+                    <span>Sensitivity</span>
+                    <strong th:text="${assessment != null ? assessment.displaySkinSensitivity : 'Not provided'}">Moderate</strong>
                 </article>
-            </div>
-        </section>
-
-        <section class="report-section">
-            <h2>Product Recommendations</h2>
-            <div class="product-columns">
-                <div>
-                    <h3>Affordable</h3>
-                    <article class="report-card compact-report-card" th:each="product : ${report.productRecommendations.affordable}">
-                        <h4 th:text="${product.productName}">Product</h4>
-                        <p><strong>Brand:</strong> <span th:text="${product.brand}">Brand</span></p>
-                        <p th:text="${product.whySuitable}">Why suitable</p>
-                    </article>
-                </div>
-
-                <div>
-                    <h3>Mid-range</h3>
-                    <article class="report-card compact-report-card" th:each="product : ${report.productRecommendations.midRange}">
-                        <h4 th:text="${product.productName}">Product</h4>
-                        <p><strong>Brand:</strong> <span th:text="${product.brand}">Brand</span></p>
-                        <p th:text="${product.whySuitable}">Why suitable</p>
-                    </article>
-                </div>
-
-                <div>
-                    <h3>Premium</h3>
-                    <article class="report-card compact-report-card" th:each="product : ${report.productRecommendations.premium}">
-                        <h4 th:text="${product.productName}">Product</h4>
-                        <p><strong>Brand:</strong> <span th:text="${product.brand}">Brand</span></p>
-                        <p th:text="${product.whySuitable}">Why suitable</p>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <section class="report-section">
-            <h2>Safety Warnings</h2>
-            <div class="report-grid">
-                <article class="report-card compact-report-card" th:each="warning : ${report.safetyWarnings}">
-                    <h3 th:text="${warning.topic}">Topic</h3>
-                    <p th:text="${warning.guidance}">Guidance</p>
+                <article class="summary-badge">
+                    <i class="bi bi-wallet2"></i>
+                    <span>Budget</span>
+                    <strong th:text="${assessment != null ? assessment.displayBudget : 'Not provided'}">Mid Range</strong>
+                </article>
+                <article class="summary-badge">
+                    <i class="bi bi-stars"></i>
+                    <span>Main Concerns</span>
+                    <strong th:text="${assessment != null ? assessment.concernCount : 0}">3</strong>
                 </article>
             </div>
         </section>
 
-        <section class="report-disclaimer">
-            <p th:text="${report.disclaimer}">Disclaimer</p>
+        <section class="dashboard-layout">
+            <div class="dashboard-main">
+                <section class="dashboard-card skin-summary-card">
+                    <div class="card-heading">
+                        <span class="section-icon"><i class="bi bi-person-hearts"></i></span>
+                        <div>
+                            <p class="eyebrow">Skin Summary</p>
+                            <h2>Your Profile</h2>
+                        </div>
+                    </div>
+                    <div class="summary-profile-grid">
+                        <div>
+                            <span>Skin Type</span>
+                            <strong th:text="${assessment != null ? assessment.displaySkinType : 'Not provided'}">Combination</strong>
+                        </div>
+                        <div>
+                            <span>Sensitivity</span>
+                            <strong th:text="${assessment != null ? assessment.displaySkinSensitivity : 'Not provided'}">Moderate</strong>
+                        </div>
+                    </div>
+                    <p class="ai-summary" th:text="${report.skinSummary}">AI summary appears here.</p>
+                </section>
+
+                <section class="dashboard-section">
+                    <div class="section-title-row">
+                        <div>
+                            <p class="eyebrow">Morning Routine</p>
+                            <h2><i class="bi bi-brightness-alt-high"></i> Start the day protected</h2>
+                        </div>
+                    </div>
+                    <div class="routine-grid">
+                        <article class="routine-card morning-card" th:each="step, status : ${report.morningRoutine}">
+                            <div class="routine-topline">
+                                <span class="step-number" th:text="${status.count}">1</span>
+                                <span class="routine-icon"><i th:class="${#strings.containsIgnoreCase(step.stepName, 'sunscreen') ? 'bi bi-brightness-high' : (#strings.containsIgnoreCase(step.stepName, 'serum') ? 'bi bi-stars' : (#strings.containsIgnoreCase(step.stepName, 'moistur') ? 'bi bi-droplet' : 'bi bi-droplet-half'))}"></i></span>
+                            </div>
+                            <h3 th:text="${step.stepName}">Cleanser</h3>
+                            <div class="ingredient-badges">
+                                <span th:each="ingredient : ${#strings.arraySplit(step.recommendedIngredients, ',')}" th:text="${#strings.trim(ingredient)}">Niacinamide</span>
+                            </div>
+                            <p><strong>Suggested Product</strong><span th:text="${step.suggestedProducts}">Product</span></p>
+                            <p class="reasoning" th:text="${step.scientificReasoning}">Reasoning</p>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="dashboard-section">
+                    <div class="section-title-row">
+                        <div>
+                            <p class="eyebrow">Night Routine</p>
+                            <h2><i class="bi bi-moon-stars"></i> Repair while you rest</h2>
+                        </div>
+                    </div>
+                    <div class="routine-grid">
+                        <article class="routine-card night-card" th:each="step, status : ${report.nightRoutine}">
+                            <div class="routine-topline">
+                                <span class="step-number" th:text="${status.count}">1</span>
+                                <span class="routine-icon"><i th:class="${#strings.containsIgnoreCase(step.stepName, 'treatment') ? 'bi bi-magic' : (#strings.containsIgnoreCase(step.stepName, 'serum') ? 'bi bi-stars' : (#strings.containsIgnoreCase(step.stepName, 'moistur') ? 'bi bi-droplet' : 'bi bi-moon'))}"></i></span>
+                            </div>
+                            <h3 th:text="${step.stepName}">Treatment</h3>
+                            <div class="ingredient-badges night-badges">
+                                <span th:each="ingredient : ${#strings.arraySplit(step.recommendedIngredients, ',')}" th:text="${#strings.trim(ingredient)}">Retinol</span>
+                            </div>
+                            <p><strong>Suggested Product</strong><span th:text="${step.suggestedProducts}">Product</span></p>
+                            <p class="reasoning" th:text="${step.scientificReasoning}">Reasoning</p>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="dashboard-section ingredient-columns">
+                    <div class="dashboard-card">
+                        <div class="card-heading compact-heading">
+                            <span class="section-icon green-icon"><i class="bi bi-check2"></i></span>
+                            <h2>Ingredients To Look For</h2>
+                        </div>
+                        <div class="ingredient-list good-list">
+                            <article th:each="ingredient : ${report.ingredientsToUse}">
+                                <strong><i class="bi bi-check-circle-fill"></i> <span th:text="${ingredient.ingredient}">Niacinamide</span></strong>
+                                <p th:text="${ingredient.explanation}">Explanation</p>
+                            </article>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card avoid-card">
+                        <div class="card-heading compact-heading">
+                            <span class="section-icon warning-icon"><i class="bi bi-exclamation-triangle"></i></span>
+                            <h2>Ingredients To Avoid</h2>
+                        </div>
+                        <div class="ingredient-list avoid-list">
+                            <article th:each="ingredient : ${report.ingredientsToAvoid}">
+                                <strong><i class="bi bi-x-circle-fill"></i> <span th:text="${ingredient.ingredient}">Harsh fragrance</span></strong>
+                                <p th:text="${ingredient.explanation}">Explanation</p>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="dashboard-section">
+                    <div class="section-title-row">
+                        <div>
+                            <p class="eyebrow">Product Recommendations</p>
+                            <h2><i class="bi bi-bag-heart"></i> Products worth researching</h2>
+                        </div>
+                    </div>
+
+                    <div class="product-tier affordable-tier">
+                        <h3><i class="bi bi-heart-fill"></i> Affordable</h3>
+                        <div class="product-card-grid">
+                            <article class="product-card" th:each="product : ${report.productRecommendations.affordable}">
+                                <img th:src="${@productImageResolver.resolve(product)}" th:alt="${product.productName}" loading="lazy">
+                                <span class="budget-pill">Affordable</span>
+                                <a class="product-name" th:href="${product.googleSearchUrl}" target="_blank" rel="noopener noreferrer" th:text="${product.productName}">Product</a>
+                                <p class="product-brand" th:text="${product.brand}">Brand</p>
+                                <p th:text="${product.whySuitable}">Reason</p>
+                                <a class="view-product-button" th:href="${product.googleSearchUrl}" target="_blank" rel="noopener noreferrer">
+                                    <i class="bi bi-search"></i> View Product
+                                </a>
+                            </article>
+                        </div>
+                    </div>
+
+                    <div class="product-tier mid-tier">
+                        <h3><i class="bi bi-stars"></i> Mid-range</h3>
+                        <div class="product-card-grid">
+                            <article class="product-card" th:each="product : ${report.productRecommendations.midRange}">
+                                <img th:src="${@productImageResolver.resolve(product)}" th:alt="${product.productName}" loading="lazy">
+                                <span class="budget-pill">Mid-range</span>
+                                <a class="product-name" th:href="${product.googleSearchUrl}" target="_blank" rel="noopener noreferrer" th:text="${product.productName}">Product</a>
+                                <p class="product-brand" th:text="${product.brand}">Brand</p>
+                                <p th:text="${product.whySuitable}">Reason</p>
+                                <a class="view-product-button" th:href="${product.googleSearchUrl}" target="_blank" rel="noopener noreferrer">
+                                    <i class="bi bi-search"></i> View Product
+                                </a>
+                            </article>
+                        </div>
+                    </div>
+
+                    <div class="product-tier premium-tier">
+                        <h3><i class="bi bi-gem"></i> Premium</h3>
+                        <div class="product-card-grid">
+                            <article class="product-card" th:each="product : ${report.productRecommendations.premium}">
+                                <img th:src="${@productImageResolver.resolve(product)}" th:alt="${product.productName}" loading="lazy">
+                                <span class="budget-pill">Premium</span>
+                                <a class="product-name" th:href="${product.googleSearchUrl}" target="_blank" rel="noopener noreferrer" th:text="${product.productName}">Product</a>
+                                <p class="product-brand" th:text="${product.brand}">Brand</p>
+                                <p th:text="${product.whySuitable}">Reason</p>
+                                <a class="view-product-button" th:href="${product.googleSearchUrl}" target="_blank" rel="noopener noreferrer">
+                                    <i class="bi bi-search"></i> View Product
+                                </a>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="dashboard-section">
+                    <div class="section-title-row">
+                        <div>
+                            <p class="eyebrow">Safety Warnings</p>
+                            <h2><i class="bi bi-shield-exclamation"></i> Use with care</h2>
+                        </div>
+                    </div>
+                    <div class="warning-grid">
+                        <article class="safety-card" th:each="warning : ${report.safetyWarnings}">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                            <div>
+                                <h3 th:text="${warning.topic}">Patch Test</h3>
+                                <p th:text="${warning.guidance}">Guidance</p>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+            </div>
+
+            <aside class="dashboard-sidebar">
+                <section class="dashboard-card timeline-card">
+                    <div class="card-heading compact-heading">
+                        <span class="section-icon"><i class="bi bi-calendar2-heart"></i></span>
+                        <h2>Daily Timeline</h2>
+                    </div>
+
+                    <div class="timeline-group">
+                        <h3><i class="bi bi-brightness-high"></i> Morning</h3>
+                        <ol class="routine-timeline">
+                            <li th:each="step : ${report.morningRoutine}">
+                                <span><i class="bi bi-sun"></i></span>
+                                <strong th:text="${step.stepName}">Cleanser</strong>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <div class="timeline-group">
+                        <h3><i class="bi bi-moon-stars"></i> Night</h3>
+                        <ol class="routine-timeline night-timeline">
+                            <li th:each="step : ${report.nightRoutine}">
+                                <span><i class="bi bi-moon"></i></span>
+                                <strong th:text="${step.stepName}">Moisturizer</strong>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+            </aside>
         </section>
+
+        <footer class="report-footer">
+            <p>This application provides AI-generated skincare guidance and is not a substitute for professional dermatological advice.</p>
+            <p th:if="${report.disclaimer != null and !#strings.isEmpty(report.disclaimer)}" th:text="${report.disclaimer}">AI disclaimer</p>
+            <a class="download-report-button" th:href="@{/report/download}">
+                <i class="bi bi-file-earmark-arrow-down"></i> Download Report
+            </a>
+        </footer>
     </main>
 </body>
 </html>

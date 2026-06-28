@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>SkinSense AI Report</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 16mm 14mm;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            color: #17211d;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 10.5px;
+            line-height: 1.45;
+        }
+
+        h1,
+        h2,
+        h3,
+        p {
+            margin-top: 0;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            font-size: 28px;
+            line-height: 1.05;
+        }
+
+        h2 {
+            margin-bottom: 8px;
+            color: #10241d;
+            font-size: 16px;
+        }
+
+        h3 {
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+
+        p {
+            margin-bottom: 7px;
+        }
+
+        .header {
+            padding: 18px;
+            border-radius: 10px;
+            background: #eef9f4;
+            border: 1px solid #d7eee5;
+        }
+
+        .status {
+            display: inline-block;
+            margin-bottom: 8px;
+            padding: 5px 8px;
+            border-radius: 20px;
+            color: #0d5d50;
+            background: #dff6ed;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            color: #617069;
+            font-size: 12px;
+        }
+
+        .badges {
+            display: table;
+            width: 100%;
+            margin-top: 12px;
+            table-layout: fixed;
+        }
+
+        .badge {
+            display: table-cell;
+            padding: 8px;
+            border: 1px solid #e1ece7;
+            background: #ffffff;
+        }
+
+        .badge span {
+            display: block;
+            color: #617069;
+            font-size: 9px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .badge strong {
+            display: block;
+            margin-top: 3px;
+            font-size: 12px;
+        }
+
+        .section {
+            margin-top: 14px;
+            page-break-inside: avoid;
+        }
+
+        .card {
+            margin-bottom: 8px;
+            padding: 11px;
+            border: 1px solid #e0ebe7;
+            border-radius: 8px;
+            background: #ffffff;
+            page-break-inside: avoid;
+        }
+
+        .routine-grid,
+        .ingredient-grid,
+        .product-grid {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            border-spacing: 7px;
+            margin-left: -7px;
+        }
+
+        .cell {
+            display: table-cell;
+            vertical-align: top;
+        }
+
+        .step-number {
+            display: inline-block;
+            min-width: 20px;
+            margin-right: 6px;
+            padding: 3px 6px;
+            border-radius: 12px;
+            color: #ffffff;
+            background: #10241d;
+            font-size: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .muted {
+            color: #617069;
+        }
+
+        .pill {
+            display: inline-block;
+            margin: 2px 3px 2px 0;
+            padding: 4px 6px;
+            border-radius: 20px;
+            color: #0d5d50;
+            background: #e4f8f1;
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+        .avoid {
+            border-color: #f4cbc4;
+            background: #fff8f6;
+        }
+
+        .avoid h3 {
+            color: #a93c35;
+        }
+
+        .product-card img {
+            display: block;
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 82px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 7px;
+            border-radius: 8px;
+            border: 1px solid #e0ebe7;
+            background: #ffffff;
+        }
+
+        .product-card a {
+            color: #10241d;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .warning {
+            border-color: #f4cbc4;
+            background: #fff8f6;
+        }
+
+        .footer {
+            margin-top: 14px;
+            padding-top: 10px;
+            border-top: 1px solid #dfe9e5;
+            color: #617069;
+            font-size: 9px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <section class="header">
+        <span class="status">Analysis Complete</span>
+        <h1>SkinSense AI Report</h1>
+        <p class="subtitle">Personalized skincare recommendations generated using Gemini AI.</p>
+        <div class="badges">
+            <div class="badge">
+                <span>Skin Type</span>
+                <strong th:text="${assessment.displaySkinType}">Combination</strong>
+            </div>
+            <div class="badge">
+                <span>Sensitivity</span>
+                <strong th:text="${assessment.displaySkinSensitivity}">Moderate</strong>
+            </div>
+            <div class="badge">
+                <span>Budget</span>
+                <strong th:text="${assessment.displayBudget}">Mid Range</strong>
+            </div>
+            <div class="badge">
+                <span>Main Concerns</span>
+                <strong th:text="${assessment.concernCount}">3</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Skin Summary</h2>
+        <div class="card">
+            <p th:text="${report.skinSummary}">AI summary appears here.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Morning Routine</h2>
+        <div class="routine-grid">
+            <div class="cell" th:each="step, status : ${report.morningRoutine}">
+                <div class="card">
+                    <h3><span class="step-number" th:text="${status.count}">1</span><span th:text="${step.stepName}">Cleanser</span></h3>
+                    <p><strong>Ingredients:</strong> <span th:text="${step.recommendedIngredients}">Ingredients</span></p>
+                    <p><strong>Product:</strong> <span th:text="${step.suggestedProducts}">Product</span></p>
+                    <p class="muted" th:text="${step.scientificReasoning}">Reasoning</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Night Routine</h2>
+        <div class="routine-grid">
+            <div class="cell" th:each="step, status : ${report.nightRoutine}">
+                <div class="card">
+                    <h3><span class="step-number" th:text="${status.count}">1</span><span th:text="${step.stepName}">Treatment</span></h3>
+                    <p><strong>Ingredients:</strong> <span th:text="${step.recommendedIngredients}">Ingredients</span></p>
+                    <p><strong>Product:</strong> <span th:text="${step.suggestedProducts}">Product</span></p>
+                    <p class="muted" th:text="${step.scientificReasoning}">Reasoning</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="ingredient-grid">
+            <div class="cell">
+                <h2>Ingredients To Look For</h2>
+                <div class="card" th:each="ingredient : ${report.ingredientsToUse}">
+                    <h3 th:text="${ingredient.ingredient}">Niacinamide</h3>
+                    <p th:text="${ingredient.explanation}">Explanation</p>
+                </div>
+            </div>
+            <div class="cell">
+                <h2>Ingredients To Avoid</h2>
+                <div class="card avoid" th:each="ingredient : ${report.ingredientsToAvoid}">
+                    <h3 th:text="${ingredient.ingredient}">Harsh fragrance</h3>
+                    <p th:text="${ingredient.explanation}">Explanation</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Product Recommendations</h2>
+        <h3>Affordable</h3>
+        <div class="product-grid">
+            <div class="cell" th:each="product : ${report.productRecommendations.affordable}">
+                <div class="card product-card">
+                    <img th:src="${productImageResolver.resolve(product)}" th:alt="${product.productName}" />
+                    <a th:href="${product.googleSearchUrl}" th:text="${product.productName}">Product</a>
+                    <p><strong th:text="${product.brand}">Brand</strong></p>
+                    <p class="muted" th:text="${product.whySuitable}">Reason</p>
+                </div>
+            </div>
+        </div>
+
+        <h3>Mid-range</h3>
+        <div class="product-grid">
+            <div class="cell" th:each="product : ${report.productRecommendations.midRange}">
+                <div class="card product-card">
+                    <img th:src="${productImageResolver.resolve(product)}" th:alt="${product.productName}" />
+                    <a th:href="${product.googleSearchUrl}" th:text="${product.productName}">Product</a>
+                    <p><strong th:text="${product.brand}">Brand</strong></p>
+                    <p class="muted" th:text="${product.whySuitable}">Reason</p>
+                </div>
+            </div>
+        </div>
+
+        <h3>Premium</h3>
+        <div class="product-grid">
+            <div class="cell" th:each="product : ${report.productRecommendations.premium}">
+                <div class="card product-card">
+                    <img th:src="${productImageResolver.resolve(product)}" th:alt="${product.productName}" />
+                    <a th:href="${product.googleSearchUrl}" th:text="${product.productName}">Product</a>
+                    <p><strong th:text="${product.brand}">Brand</strong></p>
+                    <p class="muted" th:text="${product.whySuitable}">Reason</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Safety Warnings</h2>
+        <div class="ingredient-grid">
+            <div class="cell" th:each="warning : ${report.safetyWarnings}">
+                <div class="card warning">
+                    <h3 th:text="${warning.topic}">Patch Test</h3>
+                    <p th:text="${warning.guidance}">Guidance</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="footer">
+        <p>This application provides AI-generated skincare guidance and is not a substitute for professional dermatological advice.</p>
+        <p th:if="${report.disclaimer != null and !#strings.isEmpty(report.disclaimer)}" th:text="${report.disclaimer}">Disclaimer</p>
+    </section>
+</body>
+</html>

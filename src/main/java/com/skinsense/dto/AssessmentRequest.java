@@ -113,4 +113,47 @@ public class AssessmentRequest {
     public void setFragranceFree(String fragranceFree) {
         this.fragranceFree = fragranceFree;
     }
+
+    public int getConcernCount() {
+        return concerns == null ? 0 : concerns.size();
+    }
+
+    public String getDisplaySkinType() {
+        return displayValue(skinType);
+    }
+
+    public String getDisplaySkinSensitivity() {
+        return displayValue(skinSensitivity);
+    }
+
+    public String getDisplayBudget() {
+        return displayValue(budget);
+    }
+
+    private String displayValue(String value) {
+        if (value == null || value.isBlank()) {
+            return "Not provided";
+        }
+
+        String text = value.replace("-", " ");
+        String[] words = text.split(" ");
+        StringBuilder builder = new StringBuilder();
+
+        for (String word : words) {
+            if (word.isBlank()) {
+                continue;
+            }
+
+            if (!builder.isEmpty()) {
+                builder.append(' ');
+            }
+
+            builder.append(Character.toUpperCase(word.charAt(0)));
+            if (word.length() > 1) {
+                builder.append(word.substring(1));
+            }
+        }
+
+        return builder.toString();
+    }
 }

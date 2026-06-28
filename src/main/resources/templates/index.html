@@ -29,15 +29,6 @@
             <div class="hero-grid">
                 <div class="hero-copy">
                     <p class="eyebrow">Gemini AI skincare guidance</p>
-                    <div class="hero-brand-lockup" aria-label="SkinSense">
-                        <span class="hero-brand-mark" aria-hidden="true">
-                            <svg viewBox="0 0 28 28" role="img">
-                                <path d="M14 3.5c4.6 3.7 7.5 7.8 7.5 12a7.5 7.5 0 0 1-15 0c0-4.2 2.9-8.3 7.5-12Z"></path>
-                                <path d="M10.7 16.8c1.7.9 4.9.8 6.8-.4"></path>
-                            </svg>
-                        </span>
-                        <span>SkinSense</span>
-                    </div>
                     <h1 id="hero-title">Your Personal Skincare Consultant</h1>
                     <p class="hero-description">
                         Get dermatologist-inspired skincare routines, ingredient analysis and personalized product recommendations powered by AI.
@@ -129,7 +120,7 @@
                 <h2 id="assessment-title">Tell SkinSense about your skin</h2>
             </div>
 
-            <form class="assessment-form" th:action="@{/assessment}" method="post">
+            <form class="assessment-form" th:action="@{/assessment}" method="post" enctype="application/x-www-form-urlencoded">
                 <section class="form-card" aria-labelledby="personal-info-title">
                     <h3 id="personal-info-title">Personal Information</h3>
                     <div class="form-grid">
