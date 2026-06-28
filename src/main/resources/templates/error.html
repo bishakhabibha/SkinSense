@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkinSense Error</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <main class="error-page">
+        <section class="error-card">
+            <p class="eyebrow">SkinSense AI</p>
+            <h1>We could not create your report</h1>
+            <p th:text="${errorMessage}">Something went wrong. Please try again.</p>
+            <a class="primary-button" th:href="@{/}">Back to Assessment</a>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkinSense Report</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" th:href="@{/}" aria-label="SkinSense home">
+            <span class="brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 28 28" role="img">
+                    <path d="M14 3.5c4.6 3.7 7.5 7.8 7.5 12a7.5 7.5 0 0 1-15 0c0-4.2 2.9-8.3 7.5-12Z"></path>
+                    <path d="M10.7 16.8c1.7.9 4.9.8 6.8-.4"></path>
+                </svg>
+            </span>
+            <span>SkinSense</span>
+        </a>
+        <nav class="header-actions" aria-label="Report navigation">
+            <a th:href="@{/}">New Assessment</a>
+        </nav>
+    </header>
+
+    <main class="report-page">
+        <section class="report-hero">
+            <p class="eyebrow">Personalized report</p>
+            <h1>Your SkinSense Results</h1>
+            <p th:text="${report.skinSummary}">Skin summary appears here.</p>
+        </section>
+
+        <section class="report-section">
+            <h2>Morning Routine</h2>
+            <div class="report-grid">
+                <article class="report-card" th:each="step : ${report.morningRoutine}">
+                    <h3 th:text="${step.stepName}">Step Name</h3>
+                    <p><strong>Ingredients:</strong> <span th:text="${step.recommendedIngredients}">Ingredients</span></p>
+                    <p><strong>Product:</strong> <span th:text="${step.suggestedProducts}">Product</span></p>
+                    <p><strong>Brand:</strong> <span th:text="${step.brand}">Brand</span></p>
+                    <p><strong>Price:</strong> <span th:text="${step.approximatePriceCategory}">Price</span></p>
+                    <p th:text="${step.scientificReasoning}">Reasoning</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="report-section">
+            <h2>Night Routine</h2>
+            <div class="report-grid">
+                <article class="report-card" th:each="step : ${report.nightRoutine}">
+                    <h3 th:text="${step.stepName}">Step Name</h3>
+                    <p><strong>Ingredients:</strong> <span th:text="${step.recommendedIngredients}">Ingredients</span></p>
+                    <p><strong>Product:</strong> <span th:text="${step.suggestedProducts}">Product</span></p>
+                    <p><strong>Brand:</strong> <span th:text="${step.brand}">Brand</span></p>
+                    <p><strong>Price:</strong> <span th:text="${step.approximatePriceCategory}">Price</span></p>
+                    <p th:text="${step.scientificReasoning}">Reasoning</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="report-section two-column-report">
+            <div>
+                <h2>Ingredients To Look For</h2>
+                <article class="report-card compact-report-card" th:each="ingredient : ${report.ingredientsToUse}">
+                    <h3 th:text="${ingredient.ingredient}">Ingredient</h3>
+                    <p th:text="${ingredient.explanation}">Explanation</p>
+                </article>
+            </div>
+            <div>
+                <h2>Ingredients To Avoid</h2>
+                <article class="report-card compact-report-card" th:each="ingredient : ${report.ingredientsToAvoid}">
+                    <h3 th:text="${ingredient.ingredient}">Ingredient</h3>
+                    <p th:text="${ingredient.explanation}">Explanation</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="report-section">
+            <h2>Product Recommendations</h2>
+            <div class="product-columns">
+                <div>
+                    <h3>Affordable</h3>
+                    <article class="report-card compact-report-card" th:each="product : ${report.productRecommendations.affordable}">
+                        <h4 th:text="${product.productName}">Product</h4>
+                        <p><strong>Brand:</strong> <span th:text="${product.brand}">Brand</span></p>
+                        <p th:text="${product.whySuitable}">Why suitable</p>
+                    </article>
+                </div>
+
+                <div>
+                    <h3>Mid-range</h3>
+                    <article class="report-card compact-report-card" th:each="product : ${report.productRecommendations.midRange}">
+                        <h4 th:text="${product.productName}">Product</h4>
+                        <p><strong>Brand:</strong> <span th:text="${product.brand}">Brand</span></p>
+                        <p th:text="${product.whySuitable}">Why suitable</p>
+                    </article>
+                </div>
+
+                <div>
+                    <h3>Premium</h3>
+                    <article class="report-card compact-report-card" th:each="product : ${report.productRecommendations.premium}">
+                        <h4 th:text="${product.productName}">Product</h4>
+                        <p><strong>Brand:</strong> <span th:text="${product.brand}">Brand</span></p>
+                        <p th:text="${product.whySuitable}">Why suitable</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="report-section">
+            <h2>Safety Warnings</h2>
+            <div class="report-grid">
+                <article class="report-card compact-report-card" th:each="warning : ${report.safetyWarnings}">
+                    <h3 th:text="${warning.topic}">Topic</h3>
+                    <p th:text="${warning.guidance}">Guidance</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="report-disclaimer">
+            <p th:text="${report.disclaimer}">Disclaimer</p>
+        </section>
+    </main>
+</body>
+</html>
