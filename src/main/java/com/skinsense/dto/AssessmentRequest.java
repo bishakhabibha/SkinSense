@@ -13,6 +13,7 @@ public class AssessmentRequest {
     private String country;
     private String timeOutdoors;
     private String sunscreenUsage;
+    private String makeupUsage;
     private String budget;
     private String routinePreference;
     private String crueltyFree;
@@ -82,6 +83,14 @@ public class AssessmentRequest {
         this.sunscreenUsage = sunscreenUsage;
     }
 
+    public String getMakeupUsage() {
+        return makeupUsage;
+    }
+
+    public void setMakeupUsage(String makeupUsage) {
+        this.makeupUsage = makeupUsage;
+    }
+
     public String getBudget() {
         return budget;
     }
@@ -96,6 +105,15 @@ public class AssessmentRequest {
 
     public void setRoutinePreference(String routinePreference) {
         this.routinePreference = routinePreference;
+    }
+
+    public int getRequestedRoutineStepCount() {
+        return RoutineLengthPreference.from(routinePreference).targetStepCount();
+    }
+
+    public String getDisplayRoutinePreference() {
+        RoutineLengthPreference preference = RoutineLengthPreference.from(routinePreference);
+        return preference.label() + " (target " + preference.targetStepCount() + " meaningful steps)";
     }
 
     public String getCrueltyFree() {

@@ -127,6 +127,10 @@ class RoutineOptimizerTests {
         assertThat(routine.getMorning()).extracting(step -> step.getProductMatch().getProduct().getId()).contains("shared-cleanser");
         assertThat(routine.getEvening()).extracting(step -> step.getProductMatch().getProduct().getId()).contains("shared-cleanser");
         assertThat(routine.getTotalCost()).isEqualByComparingTo(BigDecimal.valueOf(1800));
+        assertThat(routine.getRequestedStepCount()).isEqualTo(3);
+        assertThat(routine.getActualStepCount()).isEqualTo(3);
+        assertThat(routine.getUniqueProductCount()).isEqualTo(3);
+        assertThat(routine.getProductPlacementCount()).isEqualTo(5);
     }
 
     @Test
@@ -194,6 +198,121 @@ class RoutineOptimizerTests {
     }
 
     @Test
+    void advancedDryRoutineCanAddVerifiedHydrationStepsWithinBudget() {
+        RoutineOptimizer optimizer = optimizer(catalog(
+                product("cleanser", "Cleanser", "cleanser", 400).skin("dry").build(),
+                product("moisturizer", "Moisturizer", "moisturizer", 500).skin("dry").build(),
+                product("sunscreen", "Sunscreen", "sunscreen", 600).skin("dry").build(),
+                product("toner", "Hydrating Toner", "toner", 500).subtype("hydrating_toner").skin("dry").build(),
+                product("hydrator", "Hydrating Serum", "serum", 600).subtype("hydrating_serum").skin("dry").build()
+        ));
+        AssessmentRequest request = assessment("under-4000");
+        request.setRoutinePreference("advanced");
+
+        SkincareRoutine routine = optimizer.optimize(analysis("dry", "moderate", false, true), request);
+
+        assertThat(productIds(routine)).contains("toner", "hydrator");
+        assertThat(routine.getMorning()).extracting(RoutineProductStep::getStepName).contains("Toner");
+        assertThat(routine.getEvening()).extracting(RoutineProductStep::getStepName).contains("Hydrating Serum");
+        assertThat(routine.getTotalCost()).isEqualByComparingTo("2600");
+    }
+
+    @Test
+    void standardRequestBuildsFiveMeaningfulStepsWhenSuitableProductsExist() {
+        RoutineOptimizer optimizer = optimizer(catalog(
+                product("cleanser", "Cleanser", "cleanser", 400).skin("dry").ingredients("glycerin").build(),
+                product("moisturizer", "Moisturizer", "moisturizer", 500).skin("dry").ingredients("ceramides").build(),
+                product("sunscreen", "Sunscreen", "sunscreen", 600).skin("dry").build(),
+                product("toner", "Barrier Toner", "toner", 500).subtype("hydrating_toner").skin("dry").ingredients("glycerin").build(),
+                product("hydrator", "Hydrating Serum", "serum", 600).subtype("hydrating_serum").skin("dry").ingredients("panthenol").build()
+        ));
+        AssessmentRequest request = assessment("under-4000");
+        request.setRoutinePreference("standard");
+        request.setConcerns(List.of());
+
+        SkincareRoutine routine = optimizer.optimize(analysis("dry", "moderate", false, true), request);
+
+        assertThat(routine.getRequestedStepCount()).isEqualTo(5);
+        assertThat(routine.getActualStepCount()).isEqualTo(5);
+        assertThat(routine.getUniqueProductCount()).isEqualTo(5);
+        assertThat(routine.getProductPlacementCount()).isEqualTo(7);
+        assertThat(routine.isRequestedLengthMet()).isTrue();
+        assertThat(routine.getMorning()).extracting(RoutineProductStep::getStepName)
+                .containsExactly("Cleanser", "Toner", "Moisturizer", "Sunscreen");
+        assertThat(routine.getEvening()).extracting(RoutineProductStep::getStepName)
+                .containsExactly("Cleanser", "Hydrating Serum", "Moisturizer");
+    }
+
+    @Test
+    void advancedRequestBuildsSevenDistinctUsefulStepsWhenJustified() {
+        RoutineOptimizer optimizer = optimizer(catalog(
+                product("cleanser", "Cleanser", "cleanser", 450).skin("dry").ingredients("glycerin").build(),
+                product("moisturizer", "Moisturizer", "moisturizer", 550).skin("dry").ingredients("ceramides").build(),
+                product("sunscreen", "Sunscreen", "sunscreen", 650).skin("dry").concerns("redness").build(),
+                product("micellar", "Micellar Water", "micellar_water", 500).skin("dry").size(125, "ml").build(),
+                product("toner", "Soothing Toner", "toner", 500).skin("dry").concerns("redness").ingredients("panthenol").build(),
+                product("hydrator", "Hydrating Serum", "serum", 600).subtype("hydrating_serum").skin("dry").ingredients("panthenol").build(),
+                product("redness-treatment", "Redness Treatment", "serum", 650).skin("dry").concerns("redness").ingredients("centella asiatica").build()
+        ));
+        AssessmentRequest request = assessment("under-6000");
+        request.setRoutinePreference("advanced");
+        request.setSunscreenUsage("always");
+        request.setConcerns(List.of("redness"));
+
+        SkincareRoutine routine = optimizer.optimize(analysis("dry", "moderate", true, true, "redness"), request);
+
+        assertThat(routine.getRequestedStepCount()).isEqualTo(7);
+        assertThat(routine.getActualStepCount()).isEqualTo(7);
+        assertThat(routine.getUniqueProductCount()).isEqualTo(7);
+        assertThat(routine.getProductPlacementCount()).isEqualTo(9);
+        assertThat(routine.isRequestedLengthMet()).isTrue();
+        assertThat(routine.getMorning()).extracting(RoutineProductStep::getStepName)
+                .containsExactly("Cleanser", "Toner", "Moisturizer", "Sunscreen");
+        assertThat(routine.getEvening()).extracting(RoutineProductStep::getStepName)
+                .containsExactly("First Cleanse", "Cleanser", "Hydrating Serum", "Treatment", "Moisturizer");
+        assertThat(productIds(routine)).containsExactlyInAnyOrder(
+                "cleanser", "moisturizer", "sunscreen", "micellar", "toner", "hydrator", "redness-treatment"
+        );
+    }
+
+    @Test
+    void missingOptionalCategoriesProducesHonestShorterRoutine() {
+        RoutineOptimizer optimizer = optimizer(catalog(
+                product("cleanser", "Cleanser", "cleanser", 500).skin("normal").build(),
+                product("moisturizer", "Moisturizer", "moisturizer", 500).skin("normal").build(),
+                product("sunscreen", "Sunscreen", "sunscreen", 700).skin("normal").build()
+        ));
+        AssessmentRequest request = assessment("under-4000");
+        request.setRoutinePreference("standard");
+        request.setConcerns(List.of());
+
+        SkincareRoutine routine = optimizer.optimize(analysis("normal", "low", false, true), request);
+
+        assertThat(routine.getRequestedStepCount()).isEqualTo(5);
+        assertThat(routine.getActualStepCount()).isEqualTo(3);
+        assertThat(routine.isRequestedLengthMet()).isFalse();
+        assertThat(routine.getFallbackMessage()).contains("without dropping essentials or adding filler products");
+    }
+
+    @Test
+    void unrelatedTreatmentIsNotAddedToReachRequestedLength() {
+        RoutineOptimizer optimizer = optimizer(catalog(
+                product("cleanser", "Cleanser", "cleanser", 500).skin("oily").build(),
+                product("moisturizer", "Moisturizer", "moisturizer", 500).skin("oily").build(),
+                product("sunscreen", "Sunscreen", "sunscreen", 700).skin("oily").build(),
+                product("pigment-serum", "Pigment Serum", "serum", 600).skin("oily").concerns("hyperpigmentation").build()
+        ));
+        AssessmentRequest request = assessment("under-4000");
+        request.setRoutinePreference("advanced");
+        request.setConcerns(List.of("acne"));
+
+        SkincareRoutine routine = optimizer.optimize(analysis("oily", "low", true, true, "acne"), request);
+
+        assertThat(productIds(routine)).doesNotContain("pigment-serum");
+        assertThat(routine.getActualStepCount()).isEqualTo(3);
+    }
+
+    @Test
     void tenMlSunscreenIsRejectedInFavorOfVerifiedFullSize() {
         RoutineOptimizer optimizer = optimizer(catalog(
                 product("cleanser", "Cleanser", "cleanser", 500).skin("normal").size(150, "ml").build(),
@@ -240,6 +359,27 @@ class RoutineOptimizerTests {
     }
 
     @Test
+    void lowerBudgetCanSelectASmallerMicellarWaterVariant() {
+        RoutineOptimizer optimizer = optimizer(catalog(
+                product("cleanser", "Cleanser", "cleanser", 400).skin("normal").build(),
+                product("moisturizer", "Moisturizer", "moisturizer", 400).skin("normal").build(),
+                product("sunscreen", "Sunscreen", "sunscreen", 500).skin("normal").build(),
+                product("large-micellar", "Micellar Water 400ml", "micellar_water", 1000)
+                        .skin("normal").size(400, "ml").build(),
+                product("small-micellar", "Micellar Water 100ml", "micellar_water", 600)
+                        .skin("normal").size(100, "ml").build()
+        ));
+        AssessmentRequest request = assessment("under-2000");
+        request.setSunscreenUsage("always");
+
+        SkincareRoutine routine = optimizer.optimize(analysis("normal", "low", false, true), request);
+
+        assertThat(routine.isExactBudgetFit()).isTrue();
+        assertThat(productIds(routine)).contains("small-micellar").doesNotContain("large-micellar");
+        assertThat(routine.getTotalCost()).isEqualByComparingTo("1900");
+    }
+
+    @Test
     void doubleCleanseIsNotForcedWhenSunscreenUseIsNotRegular() {
         RoutineOptimizer optimizer = optimizer(catalog(
                 product("cleanser", "Cleanser", "cleanser", 500).skin("normal").build(),
@@ -251,6 +391,23 @@ class RoutineOptimizerTests {
         SkincareRoutine routine = optimizer.optimize(analysis("normal", "low", false, true), assessment("under-4000"));
 
         assertThat(routine.getEvening()).extracting(RoutineProductStep::getStepName).doesNotContain("First Cleanse");
+    }
+
+    @Test
+    void regularMakeupUseCanTriggerFirstCleanseWithoutDailySunscreen() {
+        RoutineOptimizer optimizer = optimizer(catalog(
+                product("cleanser", "Cleanser", "cleanser", 500).skin("normal").build(),
+                product("moisturizer", "Moisturizer", "moisturizer", 500).skin("normal").build(),
+                product("sunscreen", "Sunscreen", "sunscreen", 700).skin("normal").build(),
+                product("micellar", "Micellar Water", "micellar_water", 650).skin("normal").size(125, "ml").build()
+        ));
+        AssessmentRequest request = assessment("under-4000");
+        request.setMakeupUsage("often");
+
+        SkincareRoutine routine = optimizer.optimize(analysis("normal", "low", false, true), request);
+
+        assertThat(routine.getEvening()).extracting(RoutineProductStep::getStepName).contains("First Cleanse");
+        assertThat(productIds(routine)).contains("micellar");
     }
 
     @Test
@@ -374,6 +531,11 @@ class RoutineOptimizerTests {
 
         private ProductBuilder sensitivity(String sensitivitySuitability) {
             product.setSensitivitySuitability(sensitivitySuitability);
+            return this;
+        }
+
+        private ProductBuilder subtype(String subtype) {
+            product.setSubtype(subtype);
             return this;
         }
 

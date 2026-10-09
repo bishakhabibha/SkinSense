@@ -238,8 +238,13 @@
         <div class="budget-status" th:if="${report.skincareRoutine != null}">
             <p><strong>Your budget:</strong> <span th:text="${report.skincareRoutine.budgetRange.label}">Under ৳4,000</span></p>
             <p><strong>Routine total:</strong> <span th:text="${'৳' + report.skincareRoutine.totalCost}">৳3450</span></p>
+            <p><strong>Requested routine length:</strong> <span th:text="${report.skincareRoutine.requestedStepCount + ' meaningful steps'}">5 meaningful steps</span></p>
+            <p><strong>Actual routine steps:</strong> <span th:text="${report.skincareRoutine.actualStepCount}">5</span></p>
             <p><strong>Unique products to purchase:</strong> <span th:text="${report.skincareRoutine.uniqueProductCount}">3</span></p>
-            <p th:if="${!report.skincareRoutine.exactBudgetFit}" th:text="${report.skincareRoutine.fallbackMessage}">No exact budget fit was found.</p>
+            <p><strong>AM/PM product placements:</strong> <span th:text="${report.skincareRoutine.productPlacementCount}">8</span></p>
+            <p><strong>Routine-length status:</strong> <span th:text="${report.skincareRoutine.routineLengthStatusLabel}">Requested routine length achieved</span></p>
+            <p>Meaningful steps count distinct skincare functions. A product reused morning and evening is one purchase and one meaningful step, but two placements.</p>
+            <p th:if="${report.skincareRoutine.fallbackMessage != null and !#strings.isEmpty(report.skincareRoutine.fallbackMessage)}" th:text="${report.skincareRoutine.fallbackMessage}">No exact budget fit was found.</p>
         </div>
     </section>
 
@@ -260,6 +265,7 @@
                     <p><strong>Product:</strong> <span th:text="${step.brand + ' ' + step.productName}">Product</span></p>
                     <p><strong>Price:</strong> <span th:text="${'৳' + step.product.price}">৳1200</span></p>
                     <p><strong>Verified size:</strong> <span th:text="${step.product.sizeLabel}">50 ml</span></p>
+                    <p th:if="${step.instruction != null and !#strings.isEmpty(step.instruction)}"><strong>How to use:</strong> <span th:text="${step.instruction}">Instruction</span></p>
                     <p class="muted" th:text="${step.whyPicked}">Reasoning</p>
                 </div>
             </div>
@@ -276,6 +282,7 @@
                     <p><strong>Product:</strong> <span th:text="${step.brand + ' ' + step.productName}">Product</span></p>
                     <p><strong>Price:</strong> <span th:text="${'৳' + step.product.price}">৳1200</span></p>
                     <p><strong>Verified size:</strong> <span th:text="${step.product.sizeLabel}">50 ml</span></p>
+                    <p th:if="${step.instruction != null and !#strings.isEmpty(step.instruction)}"><strong>How to use:</strong> <span th:text="${step.instruction}">Instruction</span></p>
                     <p class="muted" th:text="${step.whyPicked}">Reasoning</p>
                 </div>
             </div>

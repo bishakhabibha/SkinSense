@@ -227,6 +227,43 @@ class ProductMatcherTests {
         assertThat(matches.get(1).getAvoidIngredientMatches()).contains("fragrance");
     }
 
+    @Test
+    void micellarWaterIsMatchedAsAFirstCleanser() {
+        ProductMatcher matcher = matcher(
+                product("micellar", "Micellar Water", "micellar_water", 1000)
+                        .skinTypes("combination").size(400, "ml").build()
+        );
+
+        assertThat(matcher.rankProducts("first_cleanse",
+                analysis("combination", "low", List.of(), List.of()), preferences()))
+                .extracting(match -> match.getProduct().getId())
+                .containsExactly("micellar");
+    }
+
+    @Test
+    void hydratingSerumIsNotUsedAsATargetedTreatment() {
+        ProductMatcher matcher = matcher(
+                product("hydrator", "Hydrating Serum", "serum", 1000)
+                        .subtype("hydrating_serum").skinTypes("dry").build()
+        );
+        SkinAnalysis analysis = analysis("dry", "low", List.of("redness"), List.of("panthenol"));
+
+        assertThat(matcher.rankProducts("treatment", analysis, preferences())).isEmpty();
+        assertThat(matcher.rankProducts("hydrating_serum", analysis, preferences()))
+                .extracting(match -> match.getProduct().getId()).containsExactly("hydrator");
+    }
+
+    @Test
+    void unknownPriceIsNeverMatchedAsAFreeProduct() {
+        ProductMatcher matcher = matcher(
+                product("unknown-price", "Unknown Price Cleanser", "cleanser", 1000)
+                        .unknownPrice().skinTypes("normal").build()
+        );
+
+        assertThat(matcher.rankProducts("cleanser",
+                analysis("normal", "low", List.of(), List.of()), preferences())).isEmpty();
+    }
+
     private ProductMatcher matcher(CatalogProduct... products) {
         ProductCatalog catalog = new ProductCatalog();
         catalog.setProducts(List.of(products));
@@ -304,6 +341,22 @@ class ProductMatcherTests {
 
         private ProductBuilder ingredients(String... ingredients) {
             product.setIngredients(List.of(ingredients));
+            return this;
+        }
+
+        private ProductBuilder subtype(String subtype) {
+            product.setSubtype(subtype);
+            return this;
+        }
+
+        private ProductBuilder size(int value, String unit) {
+            product.setSizeValue(BigDecimal.valueOf(value));
+            product.setSizeUnit(unit);
+            return this;
+        }
+
+        private ProductBuilder unknownPrice() {
+            product.setPrice(null);
             return this;
         }
 

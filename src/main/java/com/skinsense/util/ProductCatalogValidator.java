@@ -2,12 +2,14 @@ package com.skinsense.util;
 
 import com.skinsense.dto.CatalogProduct;
 import com.skinsense.dto.ProductCatalog;
+import com.skinsense.dto.ProductCategory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public final class ProductCatalogValidator {
@@ -30,6 +32,7 @@ public final class ProductCatalogValidator {
         Set<String> allowedSensitivity = new HashSet<>(catalog.getAllowedSensitivitySuitability());
         Set<String> ids = new HashSet<>();
         Set<String> productUrls = new HashSet<>();
+        Set<String> productVariants = new HashSet<>();
 
         if (catalog.getProducts().isEmpty()) {
             errors.add("Catalog has no products.");
@@ -57,7 +60,20 @@ public final class ProductCatalogValidator {
                 errors.add("Duplicate product URL: " + product.getProductUrl());
             }
 
-            if (product.getPrice() == null || product.getPrice().signum() <= 0) {
+            String variantKey = normalize(product.getBrand()) + "|" + normalize(product.getName()) + "|"
+                    + product.getSizeValue() + "|" + normalize(product.getSizeUnit());
+            if (!productVariants.add(variantKey)) {
+                errors.add("Duplicate product variant: " + product.getBrand() + " " + product.getName()
+                        + " " + product.getSizeLabel());
+            }
+
+            if (product.getPrice() == null) {
+                if (product.isReadyForRecommendation()) {
+                    errors.add(label + " has an unknown price but is marked ready for recommendation.");
+                } else {
+                    warnings.add(label + " has an unknown price and will be excluded from optimization.");
+                }
+            } else if (product.getPrice().signum() <= 0) {
                 errors.add(label + " has an invalid price.");
             }
 
@@ -70,6 +86,9 @@ public final class ProductCatalogValidator {
 
             if (product.getCategory() != null && !allowedCategories.contains(product.getCategory())) {
                 errors.add(label + " uses unsupported category: " + product.getCategory());
+            } else if (product.getCategory() != null
+                    && ProductCategory.fromCatalogValue(product.getCategory()).isEmpty()) {
+                errors.add(label + " uses a category missing from the central taxonomy: " + product.getCategory());
             }
 
             if (product.getSensitivitySuitability() != null
@@ -90,7 +109,14 @@ public final class ProductCatalogValidator {
             }
 
             validateUrl(product.getProductUrl(), label, "productUrl", errors);
+            validateUrl(product.getSourceProductUrl(), label, "sourceProductUrl", errors);
             validateUrl(product.getImageUrl(), label, "imageUrl", errors);
+
+            if ("sunscreen".equals(product.getCategory()) && product.getSpf() == null) {
+                warnings.add(label + " does not have structured SPF metadata.");
+            } else if (product.getSpf() != null && product.getSpf() <= 0) {
+                errors.add(label + " has an invalid SPF value.");
+            }
 
             if (!product.isIngredientsVerified() || product.getIngredients().isEmpty()) {
                 warnings.add(label + " does not have a fully verified ingredient list.");
@@ -122,6 +148,10 @@ public final class ProductCatalogValidator {
         } catch (URISyntaxException exception) {
             errors.add(productId + " has malformed " + field + ": " + value);
         }
+    }
+
+    private static String normalize(String value) {
+        return value == null ? "" : value.trim().toLowerCase(Locale.ROOT).replaceAll("\\s+", " ");
     }
 
     public record ValidationResult(List<String> errors, List<String> warnings) {

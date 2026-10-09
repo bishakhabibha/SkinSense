@@ -84,6 +84,7 @@ public class GeminiPromptBuilder {
                 Country: %s
                 Average Time Outdoors: %s
                 Sunscreen Usage: %s
+                Makeup or Water-Resistant Product Usage: %s
                 Budget: %s
                 Routine Preference: %s
                 Cruelty-Free Products Only: %s
@@ -97,6 +98,7 @@ public class GeminiPromptBuilder {
                 valueOrNotProvided(request.getCountry()),
                 valueOrNotProvided(request.getTimeOutdoors()),
                 valueOrNotProvided(request.getSunscreenUsage()),
+                valueOrNotProvided(request.getMakeupUsage()),
                 valueOrNotProvided(request.getBudget()),
                 valueOrNotProvided(request.getRoutinePreference()),
                 valueOrNotProvided(request.getCrueltyFree()),
@@ -167,6 +169,10 @@ public class GeminiPromptBuilder {
                 Total Cost: %s %s
                 Budget Range: %s
                 Exact Budget Fit: %s
+                Requested Meaningful Steps: %s
+                Actual Meaningful Steps: %s
+                Unique Products Purchased: %s
+                AM/PM Product Placements: %s
                 Routine Notes: %s
 
                 Morning steps:
@@ -192,6 +198,10 @@ public class GeminiPromptBuilder {
                 routine.getTotalCost().toPlainString(),
                 routine.getBudgetRange().getLabel(),
                 String.valueOf(routine.isExactBudgetFit()),
+                routine.getRequestedStepCount(),
+                routine.getActualStepCount(),
+                routine.getUniqueProductCount(),
+                routine.getProductPlacementCount(),
                 listOrNotProvided(routine.getExplanationMetadata()),
                 routineSteps(routine.getMorning()),
                 routineSteps(routine.getEvening()),

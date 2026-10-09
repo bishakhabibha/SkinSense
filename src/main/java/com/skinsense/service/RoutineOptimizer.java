@@ -4,6 +4,7 @@ import com.skinsense.dto.AssessmentRequest;
 import com.skinsense.dto.BudgetRange;
 import com.skinsense.dto.ProductMatch;
 import com.skinsense.dto.RoutineProductStep;
+import com.skinsense.dto.RoutineLengthPreference;
 import com.skinsense.dto.SkinAnalysis;
 import com.skinsense.dto.SkincareRoutine;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class RoutineOptimizer {
@@ -25,6 +27,8 @@ public class RoutineOptimizer {
     private static final int NEEDED_MOISTURIZER_POINTS = 40;
     private static final int RELEVANT_TREATMENT_POINTS = 18;
     private static final int APPROPRIATE_FIRST_CLEANSE_POINTS = 14;
+    private static final int USEFUL_SUPPORT_STEP_POINTS = 10;
+    private static final int STEP_TARGET_POINTS = 45;
 
     private final ProductMatcher productMatcher;
 
@@ -34,12 +38,17 @@ public class RoutineOptimizer {
 
     public SkincareRoutine optimize(SkinAnalysis analysis, AssessmentRequest assessmentRequest) {
         BudgetRange budgetRange = BudgetRange.from(assessmentRequest == null ? null : assessmentRequest.getBudget());
+        RoutineLengthPreference lengthPreference = RoutineLengthPreference.from(
+                assessmentRequest == null ? null : assessmentRequest.getRoutinePreference()
+        );
 
         List<ProductMatch> cleansers = topCandidates("cleanser", analysis, assessmentRequest);
         List<ProductMatch> moisturizers = moisturizerCandidates(analysis, assessmentRequest);
         List<ProductMatch> sunscreens = topCandidates("sunscreen", analysis, assessmentRequest);
         List<ProductMatch> treatments = treatmentCandidates(analysis, assessmentRequest);
         List<ProductMatch> firstCleansers = firstCleanseCandidates(analysis, assessmentRequest);
+        ProductMatch toner = bestSuitableToner(analysis, assessmentRequest);
+        ProductMatch hydratingSerum = bestHydratingSerum(analysis, assessmentRequest);
 
         List<CandidateRoutine> candidates = new ArrayList<>();
         for (ProductMatch cleanser : cleansers) {
@@ -51,7 +60,11 @@ public class RoutineOptimizer {
                                     analysis, budgetRange, cleanser, moisturizer, sunscreen, treatment, firstCleanser
                             );
                             if (candidate.complete()) {
-                                candidates.add(candidate);
+                                CandidateRoutine expanded = addUsefulSupportSteps(
+                                        candidate, toner, hydratingSerum, budgetRange, analysis,
+                                        assessmentRequest, lengthPreference
+                                );
+                                candidates.add(scoreRoutineLength(expanded, lengthPreference));
                             }
                         }
                     }
@@ -105,6 +118,93 @@ public class RoutineOptimizer {
         return options;
     }
 
+    private ProductMatch bestSuitableToner(SkinAnalysis analysis, AssessmentRequest request) {
+        return topCandidates("toner", analysis, request).stream().findFirst().orElse(null);
+    }
+
+    private ProductMatch bestHydratingSerum(SkinAnalysis analysis, AssessmentRequest request) {
+        return topCandidates("hydrating_serum", analysis, request).stream().findFirst().orElse(null);
+    }
+
+    private CandidateRoutine addUsefulSupportSteps(
+            CandidateRoutine candidate,
+            ProductMatch toner,
+            ProductMatch hydratingSerum,
+            BudgetRange budgetRange,
+            SkinAnalysis analysis,
+            AssessmentRequest request,
+            RoutineLengthPreference lengthPreference
+    ) {
+        if (request == null || lengthPreference == RoutineLengthPreference.MINIMAL) {
+            return candidate;
+        }
+
+        String skinType = normalize(analysis.getSkinType());
+        String sensitivity = normalize(analysis.getSensitivity());
+        boolean hydrationSupportIsUseful = Set.of("dry", "sensitive").contains(skinType)
+                || Set.of("moderate", "high").contains(sensitivity)
+                || analysis.getConcerns().stream().map(this::normalize).anyMatch("redness"::equals);
+
+        CandidateRoutine enhanced = candidate;
+        boolean tonerHasAssessmentMatch = toner != null
+                && (!toner.getMatchedConcerns().isEmpty() || !toner.getMatchedIngredients().isEmpty());
+        if (toner != null && (hydrationSupportIsUseful || tonerHasAssessmentMatch)) {
+            enhanced = addSupportProduct(enhanced, toner, true, budgetRange, lengthPreference.targetStepCount());
+        }
+
+        if (!hydrationSupportIsUseful) {
+            return enhanced;
+        }
+
+        if (hydratingSerum != null) {
+            enhanced = addSupportProduct(
+                    enhanced, hydratingSerum, false, budgetRange, lengthPreference.targetStepCount()
+            );
+        }
+        return enhanced;
+    }
+
+    private CandidateRoutine addSupportProduct(
+            CandidateRoutine candidate,
+            ProductMatch supportProduct,
+            boolean toner,
+            BudgetRange budgetRange,
+            int targetStepCount
+    ) {
+        if (meaningfulStepCount(candidate) >= targetStepCount) {
+            return candidate;
+        }
+        List<ProductMatch> products = new ArrayList<>(Arrays.asList(
+                candidate.cleanser(), candidate.moisturizer(), candidate.sunscreen(), candidate.treatment(),
+                candidate.firstCleanser(), candidate.toner(), candidate.hydratingSerum()
+        ));
+        products.add(supportProduct);
+        BigDecimal newTotal = totalUniqueCost(products);
+        if (!budgetRange.contains(newTotal)
+                && budgetRange.distanceFromRange(newTotal).compareTo(budgetRange.distanceFromRange(candidate.totalCost())) > 0) {
+            return candidate;
+        }
+        return new CandidateRoutine(
+                candidate.cleanser(), candidate.moisturizer(), candidate.sunscreen(), candidate.treatment(),
+                candidate.firstCleanser(), toner ? supportProduct : candidate.toner(),
+                toner ? candidate.hydratingSerum() : supportProduct, newTotal,
+                candidate.score() + supportProduct.getCompatibilityScore() + USEFUL_SUPPORT_STEP_POINTS,
+                candidate.complete()
+        );
+    }
+
+    private CandidateRoutine scoreRoutineLength(
+            CandidateRoutine candidate,
+            RoutineLengthPreference lengthPreference
+    ) {
+        int achievedSteps = Math.min(meaningfulStepCount(candidate), lengthPreference.targetStepCount());
+        return new CandidateRoutine(
+                candidate.cleanser(), candidate.moisturizer(), candidate.sunscreen(), candidate.treatment(),
+                candidate.firstCleanser(), candidate.toner(), candidate.hydratingSerum(), candidate.totalCost(),
+                candidate.score() + achievedSteps * STEP_TARGET_POINTS, candidate.complete()
+        );
+    }
+
     private boolean needsTargetedTreatment(SkinAnalysis analysis, AssessmentRequest request) {
         return analysis.getRoutineNeeds().isTreatment()
                 && request != null
@@ -117,7 +217,9 @@ public class RoutineOptimizer {
             return false;
         }
         String usage = normalize(request.getSunscreenUsage());
-        return "always".equals(usage);
+        String makeupUsage = normalize(request.getMakeupUsage());
+        return "always".equals(usage)
+                || Set.of("often", "daily", "water_resistant").contains(makeupUsage);
     }
 
     private CandidateRoutine evaluate(
@@ -152,7 +254,8 @@ public class RoutineOptimizer {
             score += 30;
         }
 
-        return new CandidateRoutine(cleanser, moisturizer, sunscreen, treatment, firstCleanser, totalCost, score, true);
+        return new CandidateRoutine(cleanser, moisturizer, sunscreen, treatment, firstCleanser,
+                null, null, totalCost, score, true);
     }
 
     private SkincareRoutine chooseBestRoutine(
@@ -191,6 +294,7 @@ public class RoutineOptimizer {
     ) {
         SkincareRoutine routine = new SkincareRoutine();
         routine.setBudgetRange(budgetRange);
+        routine.setRequestedStepCount(request == null ? 3 : request.getRequestedRoutineStepCount());
         routine.setExactBudgetFit(exactFit);
         routine.setComplete(candidate.complete());
         routine.setRoutineScore(candidate.score());
@@ -207,6 +311,10 @@ public class RoutineOptimizer {
 
         morning.add(step("morning", "Cleanser", morning.size() + 1, false,
                 "Use as part of the morning routine.", candidate.cleanser()));
+        if (candidate.toner() != null) {
+            morning.add(step("morning", "Toner", morning.size() + 1, true,
+                    "Apply after cleansing for hydration and comfort.", candidate.toner()));
+        }
         if (candidate.moisturizer() != null) {
             morning.add(step("morning", "Moisturizer", morning.size() + 1, false,
                     "Use as needed for comfort and barrier support.", candidate.moisturizer()));
@@ -220,6 +328,10 @@ public class RoutineOptimizer {
         }
         evening.add(step("evening", "Cleanser", evening.size() + 1, false,
                 "Use as the regular water-based evening cleanse.", candidate.cleanser()));
+        if (candidate.hydratingSerum() != null) {
+            evening.add(step("evening", "Hydrating Serum", evening.size() + 1, true,
+                    "Apply after cleansing and before moisturizer; reduce frequency if irritation occurs.", candidate.hydratingSerum()));
+        }
         if (candidate.treatment() != null) {
             evening.add(step("evening", "Treatment", evening.size() + 1, true,
                     "Use according to product directions and skin tolerance.", candidate.treatment()));
@@ -231,10 +343,14 @@ public class RoutineOptimizer {
 
         routine.setMorning(morning);
         routine.setEvening(evening);
-        routine.setExplanationMetadata(explanationMetadata(candidate, exactFit, budgetRange, request));
+        routine.setExplanationMetadata(explanationMetadata(candidate, exactFit, budgetRange, request, routine));
 
         if (!exactFit) {
             routine.setFallbackMessage("No complete routine satisfies the selected total-budget boundary. The displayed routine is the closest compatible set of regular-use essentials from the verified catalog and is not marked as a budget fit.");
+        } else if (!routine.isRequestedLengthMet()) {
+            routine.setFallbackMessage("The requested " + routine.getRequestedStepCount()
+                    + "-step routine could not be filled with distinct, suitable products within the selected budget and available verified categories. "
+                    + "SkinSense generated " + routine.getActualStepCount() + " meaningful steps without dropping essentials or adding filler products.");
         }
 
         return routine;
@@ -262,24 +378,35 @@ public class RoutineOptimizer {
             CandidateRoutine candidate,
             boolean exactFit,
             BudgetRange budgetRange,
-            AssessmentRequest request
+            AssessmentRequest request,
+            SkincareRoutine routine
     ) {
         List<String> metadata = new ArrayList<>();
         metadata.add("Budget choice: " + budgetRange.getLabel());
         metadata.add("Exact total-budget fit: " + exactFit);
         metadata.add("Total unique product cost: BDT " + candidate.totalCost());
         metadata.add("Unique products: " + uniqueProductCount(candidate));
-        metadata.add("Routine preference: " + (request == null ? "not provided" : request.getRoutinePreference()));
-        metadata.add("Same product reused across AM/PM is counted once.");
-        if (request != null && "advanced".equals(normalize(request.getRoutinePreference())) && uniqueProductCount(candidate) < 7) {
-            metadata.add("A simpler routine was retained because the verified catalog and selected needs did not justify filler products.");
+        metadata.add("Requested meaningful steps: " + routine.getRequestedStepCount());
+        metadata.add("Actual meaningful steps: " + routine.getActualStepCount());
+        metadata.add("AM/PM product placements: " + routine.getProductPlacementCount());
+        metadata.add("Same product reused across AM/PM is one purchase and one meaningful step, but each use is one placement.");
+        if (!routine.isRequestedLengthMet()) {
+            metadata.add("A shorter routine was retained because the verified catalog, selected needs, and budget did not justify filler products.");
         }
         return metadata;
     }
 
+    private int meaningfulStepCount(CandidateRoutine candidate) {
+        return (int) Arrays.asList(candidate.cleanser(), candidate.moisturizer(), candidate.sunscreen(),
+                        candidate.treatment(), candidate.firstCleanser(), candidate.toner(), candidate.hydratingSerum())
+                .stream()
+                .filter(match -> match != null && match.getProduct() != null)
+                .count();
+    }
+
     private int uniqueProductCount(CandidateRoutine candidate) {
         return (int) Arrays.asList(candidate.cleanser(), candidate.moisturizer(), candidate.sunscreen(),
-                        candidate.treatment(), candidate.firstCleanser()).stream()
+                        candidate.treatment(), candidate.firstCleanser(), candidate.toner(), candidate.hydratingSerum()).stream()
                 .filter(match -> match != null && match.getProduct() != null)
                 .map(match -> match.getProduct().getId())
                 .distinct()
@@ -311,12 +438,14 @@ public class RoutineOptimizer {
             ProductMatch sunscreen,
             ProductMatch treatment,
             ProductMatch firstCleanser,
+            ProductMatch toner,
+            ProductMatch hydratingSerum,
             BigDecimal totalCost,
             int score,
             boolean complete
     ) {
         private static CandidateRoutine incomplete() {
-            return new CandidateRoutine(null, null, null, null, null, BigDecimal.ZERO, 0, false);
+            return new CandidateRoutine(null, null, null, null, null, null, null, BigDecimal.ZERO, 0, false);
         }
     }
 }

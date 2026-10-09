@@ -90,9 +90,14 @@
                     </div>
                     <div class="budget-status-card" th:if="${report.skincareRoutine != null}">
                         <p><strong>Total routine cost:</strong> <span th:text="${'৳' + report.skincareRoutine.totalCost}">৳3450</span></p>
+                        <p><strong>Requested routine length:</strong> <span th:text="${report.skincareRoutine.requestedStepCount + ' meaningful steps'}">5 meaningful steps</span></p>
+                        <p><strong>Actual routine steps:</strong> <span th:text="${report.skincareRoutine.actualStepCount}">5</span></p>
                         <p><strong>Unique products to purchase:</strong> <span th:text="${report.skincareRoutine.uniqueProductCount}">3</span></p>
+                        <p><strong>AM/PM product placements:</strong> <span th:text="${report.skincareRoutine.productPlacementCount}">8</span></p>
+                        <p><strong>Routine-length status:</strong> <span th:text="${report.skincareRoutine.routineLengthStatusLabel}">Requested routine length achieved</span></p>
                         <p><strong>Your budget:</strong> <span th:text="${report.skincareRoutine.budgetRange.label}">Under ৳4,000</span></p>
-                        <p th:if="${!report.skincareRoutine.exactBudgetFit}" th:text="${report.skincareRoutine.fallbackMessage}">
+                        <p>Meaningful steps count distinct skincare functions. A product reused in both routines is one purchase and one meaningful step, but two AM/PM placements.</p>
+                        <p th:if="${report.skincareRoutine.fallbackMessage != null and !#strings.isEmpty(report.skincareRoutine.fallbackMessage)}" th:text="${report.skincareRoutine.fallbackMessage}">
                             No exact budget fit was found.
                         </p>
                     </div>
@@ -118,6 +123,7 @@
                             </div>
                             <p><strong>Selected Product</strong><span th:text="${step.brand + ' ' + step.productName}">Product</span></p>
                             <p><strong>Price</strong><span th:text="${'৳' + step.product.price}">৳1200</span></p>
+                            <p><strong>Verified size</strong><span th:text="${step.product.sizeLabel}">50 ml</span></p>
                             <p th:if="${step.instruction != null and !#strings.isEmpty(step.instruction)}"><strong>How to use</strong><span th:text="${step.instruction}">Instruction</span></p>
                             <p class="reasoning" th:text="${step.whyPicked}">Reasoning</p>
                         </article>
@@ -143,6 +149,7 @@
                             </div>
                             <p><strong>Selected Product</strong><span th:text="${step.brand + ' ' + step.productName}">Product</span></p>
                             <p><strong>Price</strong><span th:text="${'৳' + step.product.price}">৳1200</span></p>
+                            <p><strong>Verified size</strong><span th:text="${step.product.sizeLabel}">50 ml</span></p>
                             <p th:if="${step.instruction != null and !#strings.isEmpty(step.instruction)}"><strong>How to use</strong><span th:text="${step.instruction}">Instruction</span></p>
                             <p class="reasoning" th:text="${step.whyPicked}">Reasoning</p>
                         </article>
@@ -231,25 +238,30 @@
                         <h2>Daily Timeline</h2>
                     </div>
 
-                    <div class="timeline-scroll" tabindex="0" aria-label="Scrollable daily skincare steps">
-                        <div class="timeline-group">
-                            <h3><i class="bi bi-brightness-high"></i> Morning</h3>
-                            <ol class="routine-timeline">
-                                <li th:each="step : ${report.skincareRoutine.morning}">
-                                    <span><i class="bi bi-sun"></i></span>
-                                    <strong th:text="${step.stepName}">Cleanser</strong>
-                                </li>
-                            </ol>
-                        </div>
+                    <div class="timeline-scroll-shell">
+                        <div class="timeline-scroll" tabindex="0" aria-label="Scrollable daily skincare steps">
+                            <div class="timeline-group">
+                                <h3><i class="bi bi-brightness-high"></i> Morning</h3>
+                                <ol class="routine-timeline">
+                                    <li th:each="step : ${report.skincareRoutine.morning}">
+                                        <span><i class="bi bi-sun"></i></span>
+                                        <strong th:text="${step.stepName}">Cleanser</strong>
+                                    </li>
+                                </ol>
+                            </div>
 
-                        <div class="timeline-group">
-                            <h3><i class="bi bi-moon-stars"></i> Night</h3>
-                            <ol class="routine-timeline night-timeline">
-                                <li th:each="step : ${report.skincareRoutine.evening}">
-                                    <span><i class="bi bi-moon"></i></span>
-                                    <strong th:text="${step.stepName}">Moisturizer</strong>
-                                </li>
-                            </ol>
+                            <div class="timeline-group">
+                                <h3><i class="bi bi-moon-stars"></i> Night</h3>
+                                <ol class="routine-timeline night-timeline">
+                                    <li th:each="step : ${report.skincareRoutine.evening}">
+                                        <span><i class="bi bi-moon"></i></span>
+                                        <strong th:text="${step.stepName}">Moisturizer</strong>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="timeline-scrollbar" aria-hidden="true">
+                            <div class="timeline-scrollbar-thumb"></div>
                         </div>
                     </div>
                 </section>
@@ -264,5 +276,6 @@
             </a>
         </footer>
     </main>
+    <script th:src="@{/js/app.js}" defer></script>
 </body>
 </html>

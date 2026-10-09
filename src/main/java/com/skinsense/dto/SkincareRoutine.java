@@ -4,12 +4,16 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.LinkedHashSet;
 
 public class SkincareRoutine {
 
     private List<RoutineProductStep> morning = new ArrayList<>();
     private List<RoutineProductStep> evening = new ArrayList<>();
+    private int requestedStepCount = 3;
     private BigDecimal totalCost = BigDecimal.ZERO;
     private String currency = "BDT";
     private BudgetRange budgetRange = BudgetRange.UNDER_4000;
@@ -33,6 +37,35 @@ public class SkincareRoutine {
 
     public void setEvening(List<RoutineProductStep> evening) {
         this.evening = evening == null ? new ArrayList<>() : evening;
+    }
+
+    public int getRequestedStepCount() {
+        return requestedStepCount;
+    }
+
+    public void setRequestedStepCount(int requestedStepCount) {
+        this.requestedStepCount = Math.max(requestedStepCount, 1);
+    }
+
+    public int getActualStepCount() {
+        Set<String> stepNames = new LinkedHashSet<>();
+        morning.forEach(step -> addStepName(stepNames, step));
+        evening.forEach(step -> addStepName(stepNames, step));
+        return stepNames.size();
+    }
+
+    public int getProductPlacementCount() {
+        return morning.size() + evening.size();
+    }
+
+    public boolean isRequestedLengthMet() {
+        return getActualStepCount() >= requestedStepCount;
+    }
+
+    public String getRoutineLengthStatusLabel() {
+        return isRequestedLengthMet()
+                ? "Requested routine length achieved"
+                : "Generated the most suitable routine available";
     }
 
     public BigDecimal getTotalCost() {
@@ -127,5 +160,12 @@ public class SkincareRoutine {
             return;
         }
         uniqueSteps.putIfAbsent(step.getProductId(), step);
+    }
+
+    private void addStepName(Set<String> stepNames, RoutineProductStep step) {
+        if (step == null || step.getStepName() == null || step.getStepName().isBlank()) {
+            return;
+        }
+        stepNames.add(step.getStepName().trim().toLowerCase(Locale.ROOT));
     }
 }

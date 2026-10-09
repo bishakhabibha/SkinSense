@@ -3,6 +3,7 @@ package com.skinsense.service;
 import com.skinsense.dto.AssessmentRequest;
 import com.skinsense.dto.CatalogProduct;
 import com.skinsense.dto.ProductCatalog;
+import com.skinsense.dto.ProductCategory;
 import com.skinsense.dto.ProductMatch;
 import com.skinsense.dto.SkinAnalysis;
 import com.skinsense.util.IngredientNormalizer;
@@ -61,7 +62,11 @@ public class ProductMatcher {
             return MatchAttempt.excluded("Product is not marked ready for recommendation.");
         }
 
-        if (!categoryMatches(requestedCategory, product.getCategory())) {
+        if (product.getPrice() == null || product.getPrice().signum() <= 0) {
+            return MatchAttempt.excluded("Product price is unknown or invalid.");
+        }
+
+        if (!categoryMatches(requestedCategory, product)) {
             return MatchAttempt.excluded("Product category does not match requested category.");
         }
 
@@ -277,19 +282,27 @@ public class ProductMatcher {
         return ingredients;
     }
 
-    private boolean categoryMatches(String requestedCategory, String productCategory) {
+    private boolean categoryMatches(String requestedCategory, CatalogProduct product) {
         String requested = normalize(requestedCategory);
-        String product = normalize(productCategory);
+        ProductCategory productCategory = ProductCategory.fromCatalogValue(product.getCategory()).orElse(null);
+        if (productCategory == null) {
+            return false;
+        }
 
         if ("treatment".equals(requested)) {
-            return Set.of("serum", "spot_treatment", "exfoliant").contains(product);
+            return productCategory.isTreatment() && !"hydrating_serum".equals(normalize(product.getSubtype()));
         }
 
         if ("first_cleanse".equals(requested)) {
-            return Set.of("cleansing_oil", "cleansing_balm", "micellar_water").contains(product);
+            return productCategory.isFirstCleanser();
         }
 
-        return requested.equals(product);
+        if ("hydrating_serum".equals(requested)) {
+            return productCategory == ProductCategory.SERUM
+                    && "hydrating_serum".equals(normalize(product.getSubtype()));
+        }
+
+        return requested.equals(productCategory.catalogValue());
     }
 
     private boolean hasPracticalSize(String requestedCategory, CatalogProduct product) {

@@ -12,6 +12,9 @@ public class CatalogProduct {
     private String name;
     private String brand;
     private String category;
+    private String subtype;
+    private Integer spf;
+    private String paRating;
     private BigDecimal price;
     private String currency;
     private BigDecimal sizeValue;
@@ -64,6 +67,30 @@ public class CatalogProduct {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getSubtype() {
+        return subtype;
+    }
+
+    public void setSubtype(String subtype) {
+        this.subtype = subtype;
+    }
+
+    public Integer getSpf() {
+        return spf;
+    }
+
+    public void setSpf(Integer spf) {
+        this.spf = spf;
+    }
+
+    public String getPaRating() {
+        return paRating;
+    }
+
+    public void setPaRating(String paRating) {
+        this.paRating = paRating;
     }
 
     public BigDecimal getPrice() {
