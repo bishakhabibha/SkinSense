@@ -1,31 +1,49 @@
 # SkinSense
 
-SkinSense is an AI-powered skin analysis and skincare recommendation web application.
+**Your AI-powered skincare assistant for smarter, personalized skincare.**
+
+SkinSense uses Google's Gemini API to analyze a user's skin profile and generate personalized skincare routines, ingredient recommendations, product suggestions, and downloadable PDF reports.
+
+**Live Demo:** https://skinsense-7fpf.onrender.com/
+
+---
+
+## Features
+
+- Personalized skin assessment
+- AI-generated morning & night skincare routines
+- Ingredient recommendations and ingredients to avoid
+- Budget-based product recommendations
+- Clickable product search links
+- Downloadable PDF report
+- Responsive dashboard
+
+---
 
 ## Tech Stack
 
-- Java 21
+- Java
 - Spring Boot
-- Maven
 - Thymeleaf
-- HTML
-- CSS
-- JavaScript
-- Gemini API
+- HTML, CSS, JavaScript
+- Bootstrap
+- Google Gemini API
+- Maven
+- Docker
+- Render
 
-## Open In IntelliJ Community Edition
+---
 
-1. Open IntelliJ IDEA Community Edition.
-2. Choose `Open`.
-3. Select this `SkinSense` folder.
-4. Let IntelliJ import the Maven project from `pom.xml`.
+## Future Improvements
 
-## Environment Variables
+- AI skin image analysis
+- Progress tracking
+- Routine reminders
+- Weather-aware skincare recommendations
+- Dermatologist-reviewed recommendations
 
-Create a `.env` file in the project root and add your Gemini API key:
+---
 
-```properties
-GEMINI_API_KEY=your_api_key_here
-```
+## Disclaimer
 
-Do not commit the `.env` file.
+SkinSense provides AI-generated skincare guidance for informational purposes only and should not replace professional dermatological advice.
