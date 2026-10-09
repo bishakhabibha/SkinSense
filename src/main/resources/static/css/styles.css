@@ -966,6 +966,26 @@ h3 {
     line-height: 1.75;
 }
 
+.budget-status-card {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 18px;
+    padding: 15px;
+    border: 1px solid rgba(22, 111, 107, 0.16);
+    border-radius: 8px;
+    background: rgba(110, 215, 183, 0.12);
+}
+
+.budget-status-card p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.55;
+}
+
+.budget-status-card strong {
+    color: var(--ink);
+}
+
 .dashboard-section {
     display: grid;
     gap: 16px;
@@ -1149,6 +1169,10 @@ h3 {
     gap: 14px;
 }
 
+.selected-product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .product-card {
     display: grid;
     gap: 10px;
@@ -1194,6 +1218,14 @@ h3 {
     margin: 0;
     color: var(--muted);
     line-height: 1.55;
+}
+
+.product-card p strong {
+    color: var(--ink);
+}
+
+.product-ingredients {
+    margin-bottom: 0;
 }
 
 .view-product-button {

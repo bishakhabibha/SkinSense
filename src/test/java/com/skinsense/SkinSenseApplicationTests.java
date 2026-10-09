@@ -1,10 +1,14 @@
 package com.skinsense;
 
 import com.skinsense.dto.AssessmentRequest;
+import com.skinsense.dto.BudgetRange;
+import com.skinsense.dto.CatalogProduct;
 import com.skinsense.dto.IngredientRecommendation;
-import com.skinsense.dto.ProductRecommendation;
+import com.skinsense.dto.ProductMatch;
+import com.skinsense.dto.RoutineProductStep;
 import com.skinsense.dto.RoutineStep;
 import com.skinsense.dto.SafetyWarning;
+import com.skinsense.dto.SkincareRoutine;
 import com.skinsense.dto.SkincareReport;
 import com.skinsense.service.PdfReportService;
 import org.junit.jupiter.api.Test;
@@ -38,11 +42,9 @@ class SkinSenseApplicationTests {
         report.setSkinSummary("Combination skin with occasional breakouts and uneven tone.");
         report.setMorningRoutine(List.of(routineStep("Cleanser"), routineStep("Sunscreen")));
         report.setNightRoutine(List.of(routineStep("Cleanser"), routineStep("Moisturizer")));
+        report.setSkincareRoutine(skincareRoutine());
         report.setIngredientsToUse(List.of(ingredient("Niacinamide")));
         report.setIngredientsToAvoid(List.of(ingredient("Harsh fragrance")));
-        report.getProductRecommendations().setAffordable(List.of(product("CeraVe Hydrating Facial Cleanser", "CeraVe")));
-        report.getProductRecommendations().setMidRange(List.of(product("The Ordinary Niacinamide 10% + Zinc 1%", "The Ordinary")));
-        report.getProductRecommendations().setPremium(List.of(product("Paula's Choice 2% BHA Liquid Exfoliant", "Paula's Choice")));
         report.setSafetyWarnings(List.of(warning("Patch Test")));
         report.setDisclaimer("AI-generated guidance is not a substitute for professional dermatological advice.");
 
@@ -70,18 +72,53 @@ class SkinSenseApplicationTests {
         return ingredient;
     }
 
-    private ProductRecommendation product(String name, String brand) {
-        ProductRecommendation product = new ProductRecommendation();
-        product.setProductName(name);
-        product.setBrand(brand);
-        product.setWhySuitable("It matches the user's routine preference and skin profile.");
-        return product;
-    }
-
     private SafetyWarning warning(String topic) {
         SafetyWarning warning = new SafetyWarning();
         warning.setTopic(topic);
         warning.setGuidance("Test new products on a small area before full use.");
         return warning;
+    }
+
+    private SkincareRoutine skincareRoutine() {
+        SkincareRoutine routine = new SkincareRoutine();
+        routine.setBudgetRange(BudgetRange.BDT_2000_TO_4000);
+        routine.setExactBudgetFit(true);
+        routine.setComplete(true);
+        routine.setTotalCost(java.math.BigDecimal.valueOf(2900));
+        routine.setMorning(List.of(
+                productStep("morning", "Cleanser", 1, "sample-cleanser", "CeraVe", "Hydrating Facial Cleanser", 1200),
+                productStep("morning", "Sunscreen", 2, "sample-sunscreen", "Beauty of Joseon", "Relief Sun", 1700)
+        ));
+        routine.setEvening(List.of(
+                productStep("evening", "Cleanser", 1, "sample-cleanser", "CeraVe", "Hydrating Facial Cleanser", 1200)
+        ));
+        return routine;
+    }
+
+    private RoutineProductStep productStep(String period, String stepName, int order, String id, String brand, String name, int price) {
+        CatalogProduct product = new CatalogProduct();
+        product.setId(id);
+        product.setBrand(brand);
+        product.setName(name);
+        product.setCategory(stepName.toLowerCase());
+        product.setPrice(java.math.BigDecimal.valueOf(price));
+        product.setCurrency("BDT");
+        product.setImageUrl("images/skincare-placeholder.svg");
+        product.setKeyIngredients(List.of("glycerin", "niacinamide"));
+
+        ProductMatch match = new ProductMatch();
+        match.setProduct(product);
+        match.setMatchedIngredients(List.of("glycerin"));
+        match.setReasons(List.of("Matched the test skin profile."));
+
+        RoutineProductStep step = new RoutineProductStep();
+        step.setPeriod(period);
+        step.setStepName(stepName);
+        step.setOrder(order);
+        step.setFrequency("Use as directed.");
+        step.setInstruction("Use as directed.");
+        step.setWhyPicked("Matched the test skin profile.");
+        step.setProductMatch(match);
+        return step;
     }
 }

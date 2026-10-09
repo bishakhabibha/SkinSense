@@ -47,6 +47,11 @@
                     <span>Budget</span>
                     <strong th:text="${assessment != null ? assessment.displayBudget : 'Not provided'}">Mid Range</strong>
                 </article>
+                <article class="summary-badge" th:if="${report.skincareRoutine != null}">
+                    <i class="bi bi-receipt"></i>
+                    <span>Routine Total</span>
+                    <strong th:text="${'৳' + report.skincareRoutine.totalCost}">৳3450</strong>
+                </article>
                 <article class="summary-badge">
                     <i class="bi bi-stars"></i>
                     <span>Main Concerns</span>
@@ -74,6 +79,21 @@
                             <span>Sensitivity</span>
                             <strong th:text="${assessment != null ? assessment.displaySkinSensitivity : 'Not provided'}">Moderate</strong>
                         </div>
+                        <div th:if="${report.skincareRoutine != null}">
+                            <span>Your Budget</span>
+                            <strong th:text="${report.skincareRoutine.budgetRange.label}">BDT 2,000-BDT 4,000</strong>
+                        </div>
+                        <div th:if="${report.skincareRoutine != null}">
+                            <span>Budget Status</span>
+                            <strong th:text="${report.skincareRoutine.budgetStatusLabel}">Fits selected budget</strong>
+                        </div>
+                    </div>
+                    <div class="budget-status-card" th:if="${report.skincareRoutine != null}">
+                        <p><strong>Total routine cost:</strong> <span th:text="${'৳' + report.skincareRoutine.totalCost}">৳3450</span></p>
+                        <p><strong>Your budget:</strong> <span th:text="${report.skincareRoutine.budgetRange.label}">BDT 2,000-BDT 4,000</span></p>
+                        <p th:if="${!report.skincareRoutine.exactBudgetFit}" th:text="${report.skincareRoutine.fallbackMessage}">
+                            No exact budget fit was found.
+                        </p>
                     </div>
                     <p class="ai-summary" th:text="${report.skinSummary}">AI summary appears here.</p>
                 </section>
@@ -86,17 +106,19 @@
                         </div>
                     </div>
                     <div class="routine-grid">
-                        <article class="routine-card morning-card" th:each="step, status : ${report.morningRoutine}">
+                        <article class="routine-card morning-card" th:each="step, status : ${report.skincareRoutine.morning}">
                             <div class="routine-topline">
-                                <span class="step-number" th:text="${status.count}">1</span>
+                                <span class="step-number" th:text="${step.order}">1</span>
                                 <span class="routine-icon"><i th:class="${#strings.containsIgnoreCase(step.stepName, 'sunscreen') ? 'bi bi-brightness-high' : (#strings.containsIgnoreCase(step.stepName, 'serum') ? 'bi bi-stars' : (#strings.containsIgnoreCase(step.stepName, 'moistur') ? 'bi bi-droplet' : 'bi bi-droplet-half'))}"></i></span>
                             </div>
                             <h3 th:text="${step.stepName}">Cleanser</h3>
                             <div class="ingredient-badges">
-                                <span th:each="ingredient : ${#strings.arraySplit(step.recommendedIngredients, ',')}" th:text="${#strings.trim(ingredient)}">Niacinamide</span>
+                                <span th:each="ingredient : ${step.product.keyIngredients}" th:text="${ingredient}">Niacinamide</span>
                             </div>
-                            <p><strong>Suggested Product</strong><span th:text="${step.suggestedProducts}">Product</span></p>
-                            <p class="reasoning" th:text="${step.scientificReasoning}">Reasoning</p>
+                            <p><strong>Selected Product</strong><span th:text="${step.brand + ' ' + step.productName}">Product</span></p>
+                            <p><strong>Price</strong><span th:text="${'৳' + step.product.price}">৳1200</span></p>
+                            <p th:if="${step.instruction != null and !#strings.isEmpty(step.instruction)}"><strong>How to use</strong><span th:text="${step.instruction}">Instruction</span></p>
+                            <p class="reasoning" th:text="${step.whyPicked}">Reasoning</p>
                         </article>
                     </div>
                 </section>
@@ -109,17 +131,19 @@
                         </div>
                     </div>
                     <div class="routine-grid">
-                        <article class="routine-card night-card" th:each="step, status : ${report.nightRoutine}">
+                        <article class="routine-card night-card" th:each="step, status : ${report.skincareRoutine.evening}">
                             <div class="routine-topline">
-                                <span class="step-number" th:text="${status.count}">1</span>
+                                <span class="step-number" th:text="${step.order}">1</span>
                                 <span class="routine-icon"><i th:class="${#strings.containsIgnoreCase(step.stepName, 'treatment') ? 'bi bi-magic' : (#strings.containsIgnoreCase(step.stepName, 'serum') ? 'bi bi-stars' : (#strings.containsIgnoreCase(step.stepName, 'moistur') ? 'bi bi-droplet' : 'bi bi-moon'))}"></i></span>
                             </div>
                             <h3 th:text="${step.stepName}">Treatment</h3>
                             <div class="ingredient-badges night-badges">
-                                <span th:each="ingredient : ${#strings.arraySplit(step.recommendedIngredients, ',')}" th:text="${#strings.trim(ingredient)}">Retinol</span>
+                                <span th:each="ingredient : ${step.product.keyIngredients}" th:text="${ingredient}">Retinol</span>
                             </div>
-                            <p><strong>Suggested Product</strong><span th:text="${step.suggestedProducts}">Product</span></p>
-                            <p class="reasoning" th:text="${step.scientificReasoning}">Reasoning</p>
+                            <p><strong>Selected Product</strong><span th:text="${step.brand + ' ' + step.productName}">Product</span></p>
+                            <p><strong>Price</strong><span th:text="${'৳' + step.product.price}">৳1200</span></p>
+                            <p th:if="${step.instruction != null and !#strings.isEmpty(step.instruction)}"><strong>How to use</strong><span th:text="${step.instruction}">Instruction</span></p>
+                            <p class="reasoning" th:text="${step.whyPicked}">Reasoning</p>
                         </article>
                     </div>
                 </section>
@@ -155,57 +179,27 @@
                 <section class="dashboard-section">
                     <div class="section-title-row">
                         <div>
-                            <p class="eyebrow">Product Recommendations</p>
-                            <h2><i class="bi bi-bag-heart"></i> Products worth researching</h2>
+                            <p class="eyebrow">Selected Products</p>
+                            <h2><i class="bi bi-bag-heart"></i> Your optimized routine</h2>
                         </div>
                     </div>
 
-                    <div class="product-tier affordable-tier">
-                        <h3><i class="bi bi-heart-fill"></i> Affordable</h3>
-                        <div class="product-card-grid">
-                            <article class="product-card" th:each="product : ${report.productRecommendations.affordable}">
-                                <img th:src="${@productImageResolver.resolve(product)}" th:alt="${product.productName}" loading="lazy">
-                                <span class="budget-pill">Affordable</span>
-                                <a class="product-name" th:href="${product.googleSearchUrl}" target="_blank" rel="noopener noreferrer" th:text="${product.productName}">Product</a>
-                                <p class="product-brand" th:text="${product.brand}">Brand</p>
-                                <p th:text="${product.whySuitable}">Reason</p>
-                                <a class="view-product-button" th:href="${product.googleSearchUrl}" target="_blank" rel="noopener noreferrer">
-                                    <i class="bi bi-search"></i> View Product
-                                </a>
-                            </article>
-                        </div>
-                    </div>
-
-                    <div class="product-tier mid-tier">
-                        <h3><i class="bi bi-stars"></i> Mid-range</h3>
-                        <div class="product-card-grid">
-                            <article class="product-card" th:each="product : ${report.productRecommendations.midRange}">
-                                <img th:src="${@productImageResolver.resolve(product)}" th:alt="${product.productName}" loading="lazy">
-                                <span class="budget-pill">Mid-range</span>
-                                <a class="product-name" th:href="${product.googleSearchUrl}" target="_blank" rel="noopener noreferrer" th:text="${product.productName}">Product</a>
-                                <p class="product-brand" th:text="${product.brand}">Brand</p>
-                                <p th:text="${product.whySuitable}">Reason</p>
-                                <a class="view-product-button" th:href="${product.googleSearchUrl}" target="_blank" rel="noopener noreferrer">
-                                    <i class="bi bi-search"></i> View Product
-                                </a>
-                            </article>
-                        </div>
-                    </div>
-
-                    <div class="product-tier premium-tier">
-                        <h3><i class="bi bi-gem"></i> Premium</h3>
-                        <div class="product-card-grid">
-                            <article class="product-card" th:each="product : ${report.productRecommendations.premium}">
-                                <img th:src="${@productImageResolver.resolve(product)}" th:alt="${product.productName}" loading="lazy">
-                                <span class="budget-pill">Premium</span>
-                                <a class="product-name" th:href="${product.googleSearchUrl}" target="_blank" rel="noopener noreferrer" th:text="${product.productName}">Product</a>
-                                <p class="product-brand" th:text="${product.brand}">Brand</p>
-                                <p th:text="${product.whySuitable}">Reason</p>
-                                <a class="view-product-button" th:href="${product.googleSearchUrl}" target="_blank" rel="noopener noreferrer">
-                                    <i class="bi bi-search"></i> View Product
-                                </a>
-                            </article>
-                        </div>
+                    <div class="product-card-grid selected-product-grid">
+                        <article class="product-card" th:each="step : ${report.skincareRoutine.uniqueProductSteps}">
+                            <img th:src="${step.imageUrl}" th:alt="${step.productName}" loading="lazy">
+                            <span class="budget-pill" th:text="${step.stepName}">Cleanser</span>
+                            <a class="product-name" th:href="${step.googleSearchUrl}" target="_blank" rel="noopener noreferrer" th:text="${step.productName}">Product</a>
+                            <p class="product-brand" th:text="${step.brand}">Brand</p>
+                            <p><strong>Price:</strong> <span th:text="${'৳' + step.product.price}">৳1200</span></p>
+                            <div class="ingredient-badges product-ingredients">
+                                <span th:each="ingredient : ${step.product.keyIngredients}" th:text="${ingredient}">Niacinamide</span>
+                            </div>
+                            <p><strong>Why we picked this</strong></p>
+                            <p th:text="${step.whyPicked}">Reason</p>
+                            <a class="view-product-button" th:href="${step.googleSearchUrl}" target="_blank" rel="noopener noreferrer">
+                                <i class="bi bi-search"></i> Find Product
+                            </a>
+                        </article>
                     </div>
                 </section>
 
@@ -238,7 +232,7 @@
                     <div class="timeline-group">
                         <h3><i class="bi bi-brightness-high"></i> Morning</h3>
                         <ol class="routine-timeline">
-                            <li th:each="step : ${report.morningRoutine}">
+                            <li th:each="step : ${report.skincareRoutine.morning}">
                                 <span><i class="bi bi-sun"></i></span>
                                 <strong th:text="${step.stepName}">Cleanser</strong>
                             </li>
@@ -248,7 +242,7 @@
                     <div class="timeline-group">
                         <h3><i class="bi bi-moon-stars"></i> Night</h3>
                         <ol class="routine-timeline night-timeline">
-                            <li th:each="step : ${report.nightRoutine}">
+                            <li th:each="step : ${report.skincareRoutine.evening}">
                                 <span><i class="bi bi-moon"></i></span>
                                 <strong th:text="${step.stepName}">Moisturizer</strong>
                             </li>

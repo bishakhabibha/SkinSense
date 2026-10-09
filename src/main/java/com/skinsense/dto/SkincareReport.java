@@ -13,6 +13,7 @@ public class SkincareReport {
     private ProductRecommendations productRecommendations = new ProductRecommendations();
     private List<SafetyWarning> safetyWarnings = new ArrayList<>();
     private String disclaimer;
+    private SkincareRoutine skincareRoutine;
 
     public String getSkinSummary() {
         return skinSummary;
@@ -76,5 +77,13 @@ public class SkincareReport {
 
     public void setDisclaimer(String disclaimer) {
         this.disclaimer = disclaimer;
+    }
+
+    public SkincareRoutine getSkincareRoutine() {
+        return skincareRoutine;
+    }
+
+    public void setSkincareRoutine(SkincareRoutine skincareRoutine) {
+        this.skincareRoutine = skincareRoutine;
     }
 }

@@ -127,7 +127,7 @@ public class AssessmentRequest {
     }
 
     public String getDisplayBudget() {
-        return displayValue(budget);
+        return BudgetRange.from(budget).getLabel();
     }
 
     private String displayValue(String value) {
