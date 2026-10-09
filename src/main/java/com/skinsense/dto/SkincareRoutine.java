@@ -12,7 +12,7 @@ public class SkincareRoutine {
     private List<RoutineProductStep> evening = new ArrayList<>();
     private BigDecimal totalCost = BigDecimal.ZERO;
     private String currency = "BDT";
-    private BudgetRange budgetRange = BudgetRange.BDT_2000_TO_4000;
+    private BudgetRange budgetRange = BudgetRange.UNDER_4000;
     private int routineScore;
     private boolean exactBudgetFit;
     private boolean complete;
@@ -56,7 +56,7 @@ public class SkincareRoutine {
     }
 
     public void setBudgetRange(BudgetRange budgetRange) {
-        this.budgetRange = budgetRange == null ? BudgetRange.BDT_2000_TO_4000 : budgetRange;
+        this.budgetRange = budgetRange == null ? BudgetRange.UNDER_4000 : budgetRange;
     }
 
     public int getRoutineScore() {
@@ -104,7 +104,11 @@ public class SkincareRoutine {
     }
 
     public String getBudgetStatusLabel() {
-        return exactBudgetFit ? "Fits selected budget" : "Closest available routine";
+        return exactBudgetFit ? "Fits selected total budget" : "No exact total-budget fit";
+    }
+
+    public int getUniqueProductCount() {
+        return getUniqueProductSteps().size();
     }
 
     public List<RoutineProductStep> getUniqueProductSteps() {

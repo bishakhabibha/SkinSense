@@ -81,16 +81,17 @@
                         </div>
                         <div th:if="${report.skincareRoutine != null}">
                             <span>Your Budget</span>
-                            <strong th:text="${report.skincareRoutine.budgetRange.label}">BDT 2,000-BDT 4,000</strong>
+                            <strong th:text="${report.skincareRoutine.budgetRange.label}">Under ৳4,000</strong>
                         </div>
                         <div th:if="${report.skincareRoutine != null}">
                             <span>Budget Status</span>
-                            <strong th:text="${report.skincareRoutine.budgetStatusLabel}">Fits selected budget</strong>
+                            <strong th:text="${report.skincareRoutine.budgetStatusLabel}">Fits selected total budget</strong>
                         </div>
                     </div>
                     <div class="budget-status-card" th:if="${report.skincareRoutine != null}">
                         <p><strong>Total routine cost:</strong> <span th:text="${'৳' + report.skincareRoutine.totalCost}">৳3450</span></p>
-                        <p><strong>Your budget:</strong> <span th:text="${report.skincareRoutine.budgetRange.label}">BDT 2,000-BDT 4,000</span></p>
+                        <p><strong>Unique products to purchase:</strong> <span th:text="${report.skincareRoutine.uniqueProductCount}">3</span></p>
+                        <p><strong>Your budget:</strong> <span th:text="${report.skincareRoutine.budgetRange.label}">Under ৳4,000</span></p>
                         <p th:if="${!report.skincareRoutine.exactBudgetFit}" th:text="${report.skincareRoutine.fallbackMessage}">
                             No exact budget fit was found.
                         </p>
@@ -191,6 +192,7 @@
                             <a class="product-name" th:href="${step.googleSearchUrl}" target="_blank" rel="noopener noreferrer" th:text="${step.productName}">Product</a>
                             <p class="product-brand" th:text="${step.brand}">Brand</p>
                             <p><strong>Price:</strong> <span th:text="${'৳' + step.product.price}">৳1200</span></p>
+                            <p><strong>Verified size:</strong> <span th:text="${step.product.sizeLabel}">50 ml</span></p>
                             <div class="ingredient-badges product-ingredients">
                                 <span th:each="ingredient : ${step.product.keyIngredients}" th:text="${ingredient}">Niacinamide</span>
                             </div>
@@ -229,24 +231,26 @@
                         <h2>Daily Timeline</h2>
                     </div>
 
-                    <div class="timeline-group">
-                        <h3><i class="bi bi-brightness-high"></i> Morning</h3>
-                        <ol class="routine-timeline">
-                            <li th:each="step : ${report.skincareRoutine.morning}">
-                                <span><i class="bi bi-sun"></i></span>
-                                <strong th:text="${step.stepName}">Cleanser</strong>
-                            </li>
-                        </ol>
-                    </div>
+                    <div class="timeline-scroll" tabindex="0" aria-label="Scrollable daily skincare steps">
+                        <div class="timeline-group">
+                            <h3><i class="bi bi-brightness-high"></i> Morning</h3>
+                            <ol class="routine-timeline">
+                                <li th:each="step : ${report.skincareRoutine.morning}">
+                                    <span><i class="bi bi-sun"></i></span>
+                                    <strong th:text="${step.stepName}">Cleanser</strong>
+                                </li>
+                            </ol>
+                        </div>
 
-                    <div class="timeline-group">
-                        <h3><i class="bi bi-moon-stars"></i> Night</h3>
-                        <ol class="routine-timeline night-timeline">
-                            <li th:each="step : ${report.skincareRoutine.evening}">
-                                <span><i class="bi bi-moon"></i></span>
-                                <strong th:text="${step.stepName}">Moisturizer</strong>
-                            </li>
-                        </ol>
+                        <div class="timeline-group">
+                            <h3><i class="bi bi-moon-stars"></i> Night</h3>
+                            <ol class="routine-timeline night-timeline">
+                                <li th:each="step : ${report.skincareRoutine.evening}">
+                                    <span><i class="bi bi-moon"></i></span>
+                                    <strong th:text="${step.stepName}">Moisturizer</strong>
+                                </li>
+                            </ol>
+                        </div>
                     </div>
                 </section>
             </aside>

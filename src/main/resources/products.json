@@ -95,7 +95,9 @@
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
                          "verificationNotes":  "Kirei lists price, image, suitability notes, fragrance-free claim and ingredients. Listing was out of stock when checked.",
-                         "sourceProductUrl":  "https://kireibd.com/product/cerave-foaming-facial-cleanser-for-normal-to-oily-skin-473ml"
+                         "sourceProductUrl":  "https://kireibd.com/product/cerave-foaming-facial-cleanser-for-normal-to-oily-skin-473ml",
+                         "sizeValue":  473,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "cerave-acne-control-cleanser-237ml",
@@ -159,7 +161,9 @@
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
                          "verificationNotes":  "Kirei lists price, image, active ingredient, fragrance-free claim and full ingredient details.",
-                         "sourceProductUrl":  "https://kireibd.com/product/cerave-acne-control-cleanser-237ml"
+                         "sourceProductUrl":  "https://kireibd.com/product/cerave-acne-control-cleanser-237ml",
+                         "sizeValue":  237,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "cerave-sa-smoothing-cleanser-236ml",
@@ -223,7 +227,9 @@
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
                          "verificationNotes":  "Kirei lists price, image, fragrance-free claim and ingredient details.",
-                         "sourceProductUrl":  "https://kireibd.com/product/cerave-sa-smoothing-cleanser-fragrance-free-236ml"
+                         "sourceProductUrl":  "https://kireibd.com/product/cerave-sa-smoothing-cleanser-fragrance-free-236ml",
+                         "sizeValue":  236,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "cerave-hydrating-foaming-oil-cleanser-236ml",
@@ -262,7 +268,9 @@
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  false,
                          "verificationNotes":  "Kirei lists price, image, skin type notes, fragrance-free claim and main ingredients, but not the full INCI list.",
-                         "sourceProductUrl":  "https://kireibd.com/product/cerave-hydrating-foaming-oil-cleanser-236ml-11"
+                         "sourceProductUrl":  "https://kireibd.com/product/cerave-hydrating-foaming-oil-cleanser-236ml-11",
+                         "sizeValue":  236,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "cosrx-low-ph-good-morning-gel-cleanser-50ml",
@@ -324,7 +332,9 @@
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
                          "verificationNotes":  "Kirei lists price, image, skin types, acne/radiance notes and full ingredients.",
-                         "sourceProductUrl":  "https://kireibd.com/product/cosrx-low-ph-good-morning-gel-cleanser-50ml-3"
+                         "sourceProductUrl":  "https://kireibd.com/product/cosrx-low-ph-good-morning-gel-cleanser-50ml-3",
+                         "sizeValue":  50,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "cosrx-salicylic-acid-daily-gentle-cleanser-150ml",
@@ -391,7 +401,9 @@
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
                          "verificationNotes":  "Kirei lists price, image, acne/pore notes and full ingredients. Fragrance appears in the ingredient list.",
-                         "sourceProductUrl":  "https://kireibd.com/product/cosrx-salicylic-acid-daily-gentle-cleanser-150ml-3"
+                         "sourceProductUrl":  "https://kireibd.com/product/cosrx-salicylic-acid-daily-gentle-cleanser-150ml-3",
+                         "sizeValue":  150,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "cosrx-advanced-snail-92-all-in-one-cream-50g",
@@ -451,7 +463,9 @@
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
                          "verificationNotes":  "Kirei lists price, image, skin types, concerns and ingredient list.",
-                         "sourceProductUrl":  "https://kireibd.com/product/cosrx-advanced-snail-92-all-in-one-cream-50g-3-3"
+                         "sourceProductUrl":  "https://kireibd.com/product/cosrx-advanced-snail-92-all-in-one-cream-50g-3-3",
+                         "sizeValue":  50,
+                         "sizeUnit":  "g"
                      },
                      {
                          "id":  "beauty-of-joseon-relief-sun-rice-probiotics-10ml",
@@ -533,7 +547,9 @@
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
                          "verificationNotes":  "Kirei lists price, image, skin types, redness/uneven-tone notes and ingredients.",
-                         "sourceProductUrl":  "https://kireibd.com/product/beauty-of-joseon-rice-probiotics-relief-sun-spf50-10ml-3"
+                         "sourceProductUrl":  "https://kireibd.com/product/beauty-of-joseon-rice-probiotics-relief-sun-spf50-10ml-3",
+                         "sizeValue":  10,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "beauty-of-joseon-glow-deep-serum-rice-alpha-arbutin-30ml",
@@ -608,7 +624,9 @@
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
                          "verificationNotes":  "Kirei lists price, image, skin types, hyperpigmentation/uneven-tone notes and ingredient list.",
-                         "sourceProductUrl":  "https://kireibd.com/product/beauty-of-joseon-rice-alpha-arbutin-glow-deep-serum-30ml-3"
+                         "sourceProductUrl":  "https://kireibd.com/product/beauty-of-joseon-rice-alpha-arbutin-glow-deep-serum-30ml-3",
+                         "sizeValue":  30,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "anua-niacinamide-10-txa-4-dark-spot-serum-30ml",
@@ -682,7 +700,9 @@
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
                          "verificationNotes":  "Kirei lists price, image, skin types, dark-spot/hyperpigmentation notes and ingredient list.",
-                         "sourceProductUrl":  "https://kireibd.com/product/anua-niacinamide-10-txa-4-dark-spot-correcting-serum-30ml"
+                         "sourceProductUrl":  "https://kireibd.com/product/anua-niacinamide-10-txa-4-dark-spot-correcting-serum-30ml",
+                         "sizeValue":  30,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "skin1004-hyalu-cica-water-fit-sun-serum-50ml",
@@ -754,7 +774,9 @@
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
                          "verificationNotes":  "Kirei lists price, image, skin types, artificial-fragrance-free note and ingredient list.",
-                         "sourceProductUrl":  "https://kireibd.com/product/skin1004-madagascar-hyalu-cica-water-fit-sun-serum-spf50-pa-50ml"
+                         "sourceProductUrl":  "https://kireibd.com/product/skin1004-madagascar-hyalu-cica-water-fit-sun-serum-spf50-pa-50ml",
+                         "sizeValue":  50,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "purito-oat-in-calming-gel-cream-100ml",
@@ -811,7 +833,9 @@
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
                          "verificationNotes":  "Kirei lists price, image, skin types, redness/acne notes and ingredient list. Listing was out of stock when checked.",
-                         "sourceProductUrl":  "https://kireibd.com/product/purito-oat-in-calming-gel-cream-100ml-2"
+                         "sourceProductUrl":  "https://kireibd.com/product/purito-oat-in-calming-gel-cream-100ml-2",
+                         "sizeValue":  100,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "anua-heartleaf-77-soothing-toner-250ml",
@@ -871,7 +895,9 @@
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
                          "verificationNotes":  "Kirei lists price, image, skin types, redness/dullness notes and ingredient list.",
-                         "sourceProductUrl":  "https://kireibd.com/product/anua-heartleaf-77-soothing-toner-250ml"
+                         "sourceProductUrl":  "https://kireibd.com/product/anua-heartleaf-77-soothing-toner-250ml",
+                         "sizeValue":  250,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "anua-heartleaf-quercetinol-pore-deep-cleansing-foam-150ml",
@@ -915,7 +941,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 38."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 38.",
+                         "sizeValue":  150,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "simple-refreshing-facial-wash-150ml",
@@ -953,7 +981,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 33."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 33.",
+                         "sizeValue":  150,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "simple-water-boost-9-hydration-powered-micellar-gel-wash-150ml",
@@ -991,7 +1021,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 21."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 21.",
+                         "sizeValue":  150,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "bioderma-sebium-gel-moussant-purifying-cleansing-foaming-gel-200ml",
@@ -1031,7 +1063,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 44."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 44.",
+                         "sizeValue":  200,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "round-lab-1025-dokdo-cleanser-150ml",
@@ -1066,7 +1100,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 8."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 8.",
+                         "sizeValue":  150,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "skin1004-madagascar-centella-ampoule-foam-125ml",
@@ -1100,7 +1136,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 22."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 22.",
+                         "sizeValue":  125,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "skin1004-madagascar-centella-tea-trica-bha-foam-125ml",
@@ -1175,7 +1213,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 3."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 3.",
+                         "sizeValue":  125,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "purito-mighty-bamboo-panthenol-cleanser-150ml",
@@ -1215,7 +1255,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 38."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 38.",
+                         "sizeValue":  150,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "cerave-hydrating-cleanser-236ml",
@@ -1273,7 +1315,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 50."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 50.",
+                         "sizeValue":  236,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "the-ordinary-niacinamide-10-zinc-1-30ml",
@@ -1313,7 +1357,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 170."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 170.",
+                         "sizeValue":  30,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "the-ordinary-alpha-arbutin-2-ha-30ml",
@@ -1353,7 +1399,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 1."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 1.",
+                         "sizeValue":  30,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "the-ordinary-retinol-0-5-in-squalane-30ml",
@@ -1396,7 +1444,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 7."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 7.",
+                         "sizeValue":  30,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "the-ordinary-matrixyl-10-ha-30ml",
@@ -1437,7 +1487,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 2."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 2.",
+                         "sizeValue":  30,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "axis-y-dark-spot-correcting-glow-serum-50ml",
@@ -1484,7 +1536,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 42."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 42.",
+                         "sizeValue":  50,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "beauty-of-joseon-green-tea-panthenol-calming-serum-30ml",
@@ -1518,7 +1572,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 5."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 5.",
+                         "sizeValue":  30,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "beauty-of-joseon-ginseng-snail-mucin-revive-serum-30ml",
@@ -1563,7 +1619,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 8."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 8.",
+                         "sizeValue":  30,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "anua-peach-70-niacinamide-serum-30ml",
@@ -1599,7 +1657,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 7."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 7.",
+                         "sizeValue":  30,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "purito-pure-vitamin-c-serum-60ml",
@@ -1642,7 +1702,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 20."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 20.",
+                         "sizeValue":  60,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "purito-seoul-txa-6-niacinamide-10-retinal-serum-30ml",
@@ -1684,7 +1746,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 14."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 14.",
+                         "sizeValue":  30,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "some-by-mi-aha-bha-pha-30-days-miracle-serum-50ml",
@@ -1720,7 +1784,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 14."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 14.",
+                         "sizeValue":  50,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "skin1004-madagascar-centella-tone-brightening-capsule-ampoule-30ml",
@@ -1763,7 +1829,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 118."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 118.",
+                         "sizeValue":  30,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "axis-y-spot-the-difference-blemish-treatment-15ml",
@@ -1853,7 +1921,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 8."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 8.",
+                         "sizeValue":  15,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "celimax-pore-dark-spot-brightening-serum-30ml",
@@ -1891,7 +1961,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 7."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 7.",
+                         "sizeValue":  30,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "skin1004-madagascar-centella-poremizing-fresh-ampoule-100ml",
@@ -1963,7 +2035,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 2."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 2.",
+                         "sizeValue":  100,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "skin1004-madagascar-centella-poremizing-fresh-ampoule-30ml",
@@ -2035,7 +2109,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 49."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 49.",
+                         "sizeValue":  30,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "simple-kind-to-skin-hydrating-light-moisturiser-125ml",
@@ -2068,7 +2144,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 89."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 89.",
+                         "sizeValue":  125,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "simple-kind-to-skin-replenishing-rich-moisturiser-125-ml",
@@ -2108,7 +2186,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 50."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 50.",
+                         "sizeValue":  125,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "purito-seoul-wonder-releaf-centella-cream-unscented-15ml",
@@ -2148,7 +2228,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 2."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 2.",
+                         "sizeValue":  15,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "purito-wonder-releaf-centella-cream-unscented-50ml",
@@ -2231,7 +2313,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 16."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 16.",
+                         "sizeValue":  50,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "purito-seoul-mighty-bamboo-panthenol-cream-100ml",
@@ -2280,7 +2364,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 83."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 83.",
+                         "sizeValue":  100,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "skin1004-madagascar-centella-soothing-cream-75-ml",
@@ -2358,7 +2444,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 4."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 4.",
+                         "sizeValue":  75,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "skin1004-madagascar-centella-probio-cica-enrich-cream-50ml",
@@ -2400,7 +2488,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 34."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 34.",
+                         "sizeValue":  50,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "beauty-of-joseon-dynasty-cream-50ml",
@@ -2433,7 +2523,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 18."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 18.",
+                         "sizeValue":  50,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "axis-y-dark-spot-correcting-glow-cream-50ml",
@@ -2472,7 +2564,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 9."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 9.",
+                         "sizeValue":  50,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "skin1004-madagascar-centella-poremizing-light-gel-cream-75ml",
@@ -2508,7 +2602,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 26."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 26.",
+                         "sizeValue":  75,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "beauty-of-joseon-rice-probiotics-relief-sun-spf50-pa-50ml",
@@ -2554,7 +2650,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 227."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 227.",
+                         "sizeValue":  50,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "beauty-of-joseon-relief-sun-aqua-fresh-rice-b5-spf50-pa-50ml",
@@ -2590,7 +2688,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 128."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 128.",
+                         "sizeValue":  50,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "anua-heartleaf-silky-moisture-sunscreen-50ml",
@@ -2624,7 +2724,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 10."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 10.",
+                         "sizeValue":  50,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "axis-y-complete-no-stress-physical-sunscreen-spf50-50ml",
@@ -2668,7 +2770,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 25."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 25.",
+                         "sizeValue":  50,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "round-lab-birch-juice-moisturizing-sunscreen-spf50-50ml",
@@ -2701,7 +2805,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 10."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 10.",
+                         "sizeValue":  50,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "some-by-mi-truecica-aqua-calming-suncream-spf-50-pa-50ml",
@@ -2751,7 +2857,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 5."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 5.",
+                         "sizeValue":  50,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "some-by-mi-truecica-mineral-calming-tone-up-suncream-spf50-pa-50ml",
@@ -2785,7 +2893,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 13."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 13.",
+                         "sizeValue":  50,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "bioderma-photoderm-sun-active-defense-invisible-spf50-cream-40ml",
@@ -2818,7 +2928,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 244."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 244.",
+                         "sizeValue":  40,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "cerave-hydrating-mineral-sunscreen-broad-spectrum-spf50-75ml",
@@ -2864,7 +2976,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 1."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 1.",
+                         "sizeValue":  75,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "cerave-am-facial-moisturizing-lotion-with-sunscreen-spf-30-89ml",
@@ -2897,7 +3011,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 16."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 16.",
+                         "sizeValue":  89,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "beauty-of-joseon-matte-sun-stick-mugwort-camelia-spf-50-pa-18g",
@@ -2933,7 +3049,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 10."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 10.",
+                         "sizeValue":  18,
+                         "sizeUnit":  "g"
                      },
                      {
                          "id":  "celimax-pore-dark-spot-brightening-care-sunscreen-50-spf-pa-50ml",
@@ -3012,7 +3130,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 10."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 10.",
+                         "sizeValue":  50,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "skin1004-madagascar-centella-tone-brightening-tone-up-sunscreen-spf50-pa-50ml",
@@ -3063,7 +3183,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 10."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 10.",
+                         "sizeValue":  50,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "skin1004-madagascar-hyalu-cica-water-fit-sun-serum-15ml",
@@ -3096,7 +3218,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 5."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 5.",
+                         "sizeValue":  15,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "anua-heartleaf-pore-control-cleansing-oil-200ml",
@@ -3136,7 +3260,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 25."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 25.",
+                         "sizeValue":  200,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "beauty-of-joseon-radiance-cleansing-balm-100ml",
@@ -3180,7 +3306,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 23."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 23.",
+                         "sizeValue":  100,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "some-by-mi-aha-bha-pha-30-days-miracle-toner-150ml",
@@ -3216,7 +3344,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 6."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 6.",
+                         "sizeValue":  150,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "simple-kind-to-skin-soothing-facial-toner-200ml",
@@ -3249,7 +3379,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 26."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 26.",
+                         "sizeValue":  200,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "the-ordinary-glycolic-acid-7-exfoliating-toner-100ml",
@@ -3292,7 +3424,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 28."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 28.",
+                         "sizeValue":  100,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "beauty-of-joseon-ginseng-cleansing-oil-210ml",
@@ -3327,7 +3461,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 10."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 10.",
+                         "sizeValue":  210,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "skin1004-madagascar-centella-light-cleansing-oil-200ml",
@@ -3361,7 +3497,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  false,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 17."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 17.",
+                         "sizeValue":  200,
+                         "sizeUnit":  "ml"
                      },
                      {
                          "id":  "skin1004-madagascar-centella-poremizing-clear-toner-210ml",
@@ -3430,7 +3568,9 @@
                          "imageVerified":  true,
                          "ingredientsVerified":  true,
                          "readyForRecommendation":  true,
-                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 3."
+                         "verificationNotes":  "Verified from Kirei product API/page on 2026-10-08. Stock observed: 3.",
+                         "sizeValue":  210,
+                         "sizeUnit":  "ml"
                      }
                  ]
 }

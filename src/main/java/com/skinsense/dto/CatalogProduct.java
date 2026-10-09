@@ -14,6 +14,8 @@ public class CatalogProduct {
     private String category;
     private BigDecimal price;
     private String currency;
+    private BigDecimal sizeValue;
+    private String sizeUnit;
     private String retailer;
     private String productUrl;
     private String sourceProductUrl;
@@ -74,6 +76,29 @@ public class CatalogProduct {
 
     public String getCurrency() {
         return currency;
+    }
+
+    public BigDecimal getSizeValue() {
+        return sizeValue;
+    }
+
+    public void setSizeValue(BigDecimal sizeValue) {
+        this.sizeValue = sizeValue;
+    }
+
+    public String getSizeUnit() {
+        return sizeUnit;
+    }
+
+    public void setSizeUnit(String sizeUnit) {
+        this.sizeUnit = sizeUnit;
+    }
+
+    public String getSizeLabel() {
+        if (sizeValue == null || sizeUnit == null || sizeUnit.isBlank()) {
+            return "Size not verified";
+        }
+        return sizeValue.stripTrailingZeros().toPlainString() + " " + sizeUnit;
     }
 
     public void setCurrency(String currency) {

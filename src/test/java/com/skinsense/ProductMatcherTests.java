@@ -265,6 +265,8 @@ class ProductMatcherTests {
             product.setCategory(category);
             product.setPrice(BigDecimal.valueOf(price));
             product.setCurrency("BDT");
+            product.setSizeValue(BigDecimal.valueOf(defaultSize(category)));
+            product.setSizeUnit("ml");
             product.setRetailer("Test");
             product.setProductUrl("https://example.com/" + id);
             product.setSourceProductUrl("https://example.com/" + id);
@@ -275,6 +277,14 @@ class ProductMatcherTests {
             product.setImageVerified(true);
             product.setIngredientsVerified(true);
             product.setReadyForRecommendation(true);
+        }
+
+        private static int defaultSize(String category) {
+            return switch (category) {
+                case "cleanser" -> 150;
+                case "moisturizer", "sunscreen" -> 50;
+                default -> 30;
+            };
         }
 
         private ProductBuilder skinTypes(String... skinTypes) {

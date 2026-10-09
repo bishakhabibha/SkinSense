@@ -50,7 +50,8 @@ public class GeminiPromptBuilder {
 
                 Routine guidance:
                 - AM routine usually includes sunscreen.
-                - Treatment should be true only when useful for the profile.
+                - Treatment should be true only when it directly addresses a skin concern explicitly selected by the user.
+                - If the user selected no targeted concern, treatment must be false.
                 - Moisturizer can be false only when clearly unnecessary, such as a very minimal oily-skin routine where sunscreen/moisturizing product can cover hydration.
                 - Do not add unnecessary steps.
 
@@ -244,6 +245,8 @@ public class GeminiPromptBuilder {
                         .append(product.getCurrency())
                         .append(" ")
                         .append(product.getPrice())
+                        .append(" | verified size=")
+                        .append(product.getSizeLabel())
                         .append(" | key ingredients=")
                         .append(listOrNotProvided(product.getKeyIngredients()))
                         .append(System.lineSeparator()));

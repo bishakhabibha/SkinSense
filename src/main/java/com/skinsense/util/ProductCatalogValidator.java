@@ -61,6 +61,13 @@ public final class ProductCatalogValidator {
                 errors.add(label + " has an invalid price.");
             }
 
+            if (product.getSizeValue() == null || product.getSizeValue().signum() <= 0) {
+                errors.add(label + " has missing or invalid verified sizeValue.");
+            }
+            if (product.getSizeUnit() == null || !Set.of("ml", "g").contains(product.getSizeUnit().toLowerCase())) {
+                errors.add(label + " has missing or unsupported sizeUnit.");
+            }
+
             if (product.getCategory() != null && !allowedCategories.contains(product.getCategory())) {
                 errors.add(label + " uses unsupported category: " + product.getCategory());
             }

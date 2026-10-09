@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 public enum BudgetRange {
-    UNDER_2000("under-2000", "Under BDT 2,000", null, BigDecimal.valueOf(2000), false, true),
-    BDT_2000_TO_4000("2000-4000", "BDT 2,000-BDT 4,000", BigDecimal.valueOf(2000), BigDecimal.valueOf(4000), true, true),
-    BDT_4000_TO_6000("4000-6000", "BDT 4,000-BDT 6,000", BigDecimal.valueOf(4000), BigDecimal.valueOf(6000), true, true),
-    BDT_6000_PLUS("6000-plus", "Around BDT 6,000+", BigDecimal.valueOf(6000), null, true, false);
+    UNDER_2000("under-2000", "Under ৳2,000", null, BigDecimal.valueOf(2000), false, false),
+    UNDER_4000("under-4000", "Under ৳4,000", null, BigDecimal.valueOf(4000), false, false),
+    UNDER_6000("under-6000", "Under ৳6,000", null, BigDecimal.valueOf(6000), false, false),
+    ABOVE_6000("above-6000", "Above ৳6,000 (৳6,000 and above)", BigDecimal.valueOf(6000), null, true, false);
 
     private final String value;
     private final String label;
@@ -54,7 +54,11 @@ public enum BudgetRange {
     }
 
     public boolean isOverBudget(BigDecimal amount) {
-        return maximum != null && amount != null && amount.compareTo(maximum) > 0;
+        if (maximum == null || amount == null) {
+            return false;
+        }
+        int comparison = amount.compareTo(maximum);
+        return comparison > 0 || (comparison == 0 && !maximumInclusive);
     }
 
     public BigDecimal distanceFromRange(BigDecimal amount) {
@@ -75,16 +79,16 @@ public enum BudgetRange {
 
     public static BudgetRange from(String value) {
         if (value == null || value.isBlank()) {
-            return BDT_2000_TO_4000;
+            return UNDER_4000;
         }
 
         String normalized = value.trim().toLowerCase(Locale.ROOT);
         return switch (normalized) {
-            case "under-2000", "under_2000", "affordable" -> UNDER_2000;
-            case "2000-4000", "2000_to_4000", "mid-range", "mid_range" -> BDT_2000_TO_4000;
-            case "4000-6000", "4000_to_6000" -> BDT_4000_TO_6000;
-            case "6000-plus", "6000_plus", "premium" -> BDT_6000_PLUS;
-            default -> BDT_2000_TO_4000;
+            case "under-2000", "under_2000" -> UNDER_2000;
+            case "under-4000", "under_4000" -> UNDER_4000;
+            case "under-6000", "under_6000" -> UNDER_6000;
+            case "above-6000", "above_6000" -> ABOVE_6000;
+            default -> UNDER_4000;
         };
     }
 }

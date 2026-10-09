@@ -35,7 +35,7 @@ class SkinSenseApplicationTests {
         AssessmentRequest assessment = new AssessmentRequest();
         assessment.setSkinType("combination");
         assessment.setSkinSensitivity("moderate");
-        assessment.setBudget("mid-range");
+        assessment.setBudget("under-4000");
         assessment.setConcerns(List.of("acne", "dark-spots"));
 
         SkincareReport report = new SkincareReport();
@@ -81,7 +81,7 @@ class SkinSenseApplicationTests {
 
     private SkincareRoutine skincareRoutine() {
         SkincareRoutine routine = new SkincareRoutine();
-        routine.setBudgetRange(BudgetRange.BDT_2000_TO_4000);
+        routine.setBudgetRange(BudgetRange.UNDER_4000);
         routine.setExactBudgetFit(true);
         routine.setComplete(true);
         routine.setTotalCost(java.math.BigDecimal.valueOf(2900));

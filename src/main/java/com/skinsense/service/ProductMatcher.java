@@ -65,6 +65,10 @@ public class ProductMatcher {
             return MatchAttempt.excluded("Product category does not match requested category.");
         }
 
+        if (!hasPracticalSize(requestedCategory, product)) {
+            return MatchAttempt.excluded("Product size is unknown or too small for this regular-use routine step.");
+        }
+
         if (isSensitiveProfile(analysis) && "potentially_irritating".equals(normalize(product.getSensitivitySuitability()))) {
             return MatchAttempt.excluded("Potentially irritating products are excluded for sensitive profiles.");
         }
@@ -281,7 +285,32 @@ public class ProductMatcher {
             return Set.of("serum", "spot_treatment", "exfoliant").contains(product);
         }
 
+        if ("first_cleanse".equals(requested)) {
+            return Set.of("cleansing_oil", "cleansing_balm", "micellar_water").contains(product);
+        }
+
         return requested.equals(product);
+    }
+
+    private boolean hasPracticalSize(String requestedCategory, CatalogProduct product) {
+        String category = normalize(requestedCategory);
+        if (!Set.of("cleanser", "moisturizer", "sunscreen", "first_cleanse").contains(category)) {
+            return true;
+        }
+
+        if (product.getSizeValue() == null || product.getSizeUnit() == null) {
+            return false;
+        }
+
+        String unit = normalize(product.getSizeUnit());
+        double size = product.getSizeValue().doubleValue();
+        return switch (category) {
+            case "sunscreen" -> "ml".equals(unit) && size >= 50;
+            case "cleanser" -> "ml".equals(unit) && size >= 100;
+            case "moisturizer" -> Set.of("ml", "g").contains(unit) && size >= 50;
+            case "first_cleanse" -> Set.of("ml", "g").contains(unit) && size >= 75;
+            default -> true;
+        };
     }
 
     private boolean isSensitiveProfile(SkinAnalysis analysis) {

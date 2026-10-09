@@ -39,7 +39,7 @@ class RoutineOptimizerTests {
     }
 
     @Test
-    void dryHyperpigmentationFitsTwoToFourThousand() {
+    void dryHyperpigmentationFitsUnderFourThousand() {
         RoutineOptimizer optimizer = optimizer(catalog(
                 product("dry-cleanser", "Dry Cleanser", "cleanser", 700).skin("dry").concerns("redness").ingredients("glycerin").build(),
                 product("pigment-treatment", "Pigment Treatment", "serum", 1100).skin("dry").concerns("hyperpigmentation").ingredients("alpha arbutin").build(),
@@ -47,14 +47,14 @@ class RoutineOptimizerTests {
                 product("dry-sunscreen", "Dry Sunscreen", "sunscreen", 900).skin("dry").concerns("hyperpigmentation").ingredients("niacinamide").build()
         ));
 
-        SkincareRoutine routine = optimizer.optimize(analysis("dry", "low", true, true, "hyperpigmentation"), assessment("2000-4000"));
+        SkincareRoutine routine = optimizer.optimize(analysis("dry", "low", true, true, "hyperpigmentation"), assessment("under-4000"));
 
         assertThat(routine.isExactBudgetFit()).isTrue();
-        assertThat(routine.getTotalCost()).isBetween(BigDecimal.valueOf(2000), BigDecimal.valueOf(4000));
+        assertThat(routine.getTotalCost()).isLessThan(BigDecimal.valueOf(4000));
     }
 
     @Test
-    void combinationDarkSpotsFitsFourToSixThousand() {
+    void combinationDarkSpotsFitsUnderSixThousand() {
         RoutineOptimizer optimizer = optimizer(catalog(
                 product("combo-cleanser", "Combo Cleanser", "cleanser", 1200).skin("combination").concerns("large_pores").ingredients("glycerin").build(),
                 product("dark-treatment", "Dark Spot Treatment", "serum", 1600).skin("combination").concerns("dark_spots").ingredients("tranexamic acid").build(),
@@ -62,10 +62,10 @@ class RoutineOptimizerTests {
                 product("combo-sunscreen", "Combo Sunscreen", "sunscreen", 1200).skin("combination").concerns("dark_spots").ingredients("niacinamide").build()
         ));
 
-        SkincareRoutine routine = optimizer.optimize(analysis("combination", "moderate", true, true, "dark_spots"), assessment("4000-6000"));
+        SkincareRoutine routine = optimizer.optimize(analysis("combination", "moderate", true, true, "dark_spots"), assessment("under-6000"));
 
         assertThat(routine.isExactBudgetFit()).isTrue();
-        assertThat(routine.getTotalCost()).isBetween(BigDecimal.valueOf(4000), BigDecimal.valueOf(6000));
+        assertThat(routine.getTotalCost()).isLessThan(BigDecimal.valueOf(6000));
     }
 
     @Test
@@ -78,7 +78,7 @@ class RoutineOptimizerTests {
                 product("acid-treatment", "Acid Treatment", "serum", 700).skin("sensitive").concerns("redness").ingredients("glycolic acid").sensitivity("potentially_irritating").build()
         ));
 
-        SkincareRoutine routine = optimizer.optimize(analysis("sensitive", "high", true, true, "redness"), assessment("2000-4000"));
+        SkincareRoutine routine = optimizer.optimize(analysis("sensitive", "high", true, true, "redness"), assessment("under-4000"));
 
         assertThat(routine.isExactBudgetFit()).isTrue();
         assertThat(productIds(routine)).doesNotContain("acid-treatment");
@@ -93,7 +93,7 @@ class RoutineOptimizerTests {
                 product("lux-sunscreen", "Luxury Sunscreen", "sunscreen", 1200).skin("normal").concerns("dull_skin").ingredients("niacinamide").build()
         ));
 
-        SkincareRoutine routine = optimizer.optimize(analysis("normal", "low", true, true, "fine_lines_wrinkles"), assessment("6000-plus"));
+        SkincareRoutine routine = optimizer.optimize(analysis("normal", "low", true, true, "fine_lines_wrinkles"), assessment("above-6000"));
 
         assertThat(routine.isExactBudgetFit()).isTrue();
         assertThat(routine.getTotalCost()).isGreaterThanOrEqualTo(BigDecimal.valueOf(6000));
@@ -111,7 +111,7 @@ class RoutineOptimizerTests {
 
         assertThat(routine.isExactBudgetFit()).isFalse();
         assertThat(routine.getTotalCost()).isGreaterThanOrEqualTo(BigDecimal.valueOf(2000));
-        assertThat(routine.getFallbackMessage()).contains("No complete routine fit");
+        assertThat(routine.getFallbackMessage()).contains("No complete routine satisfies");
     }
 
     @Test
@@ -138,9 +138,127 @@ class RoutineOptimizerTests {
                 product("simple-sunscreen", "Simple Sunscreen", "sunscreen", 500).skin("normal").concerns("dull_skin").ingredients("niacinamide").build()
         ));
 
-        SkincareRoutine routine = optimizer.optimize(analysis("normal", "low", false, true, "dull_skin"), assessment("2000-4000"));
+        SkincareRoutine routine = optimizer.optimize(analysis("normal", "low", false, true, "dull_skin"), assessment("under-4000"));
 
         assertThat(productIds(routine)).doesNotContain("unneeded-serum");
+        assertThat(routine.getUniqueProductCount()).isEqualTo(3);
+    }
+
+    @Test
+    void geminiTreatmentFlagCannotAddTreatmentWithoutAnExplicitUserConcern() {
+        RoutineOptimizer optimizer = optimizer(catalog(
+                product("cleanser", "Cleanser", "cleanser", 500).skin("normal").build(),
+                product("moisturizer", "Moisturizer", "moisturizer", 500).skin("normal").build(),
+                product("sunscreen", "Sunscreen", "sunscreen", 700).skin("normal").build(),
+                product("serum", "Serum", "serum", 500).skin("normal").concerns("dull_skin").build()
+        ));
+        AssessmentRequest request = assessment("under-4000");
+        request.setConcerns(List.of());
+
+        SkincareRoutine routine = optimizer.optimize(analysis("normal", "low", true, true, "dull_skin"), request);
+
+        assertThat(productIds(routine)).doesNotContain("serum");
+        assertThat(routine.getUniqueProductCount()).isEqualTo(3);
+    }
+
+    @Test
+    void expensiveSerumCannotDisplaceEssentialSunscreenUnderBudget() {
+        RoutineOptimizer optimizer = optimizer(catalog(
+                product("cleanser", "Cleanser", "cleanser", 500).skin("oily").concerns("acne").build(),
+                product("moisturizer", "Moisturizer", "moisturizer", 500).skin("oily").concerns("acne").build(),
+                product("sunscreen", "Sunscreen", "sunscreen", 700).skin("oily").concerns("acne").build(),
+                product("serum", "High Score Serum", "serum", 1800).skin("oily").concerns("acne").ingredients("niacinamide", "salicylic acid").build()
+        ));
+
+        SkincareRoutine routine = optimizer.optimize(analysis("oily", "low", true, true, "acne"), assessment("under-2000"));
+
+        assertThat(routine.isExactBudgetFit()).isTrue();
+        assertThat(productIds(routine)).contains("cleanser", "moisturizer", "sunscreen").doesNotContain("serum");
+    }
+
+    @Test
+    void advancedPreferenceDoesNotCreateRedundantFillerProducts() {
+        RoutineOptimizer optimizer = optimizer(catalog(
+                product("cleanser", "Cleanser", "cleanser", 500).skin("normal").build(),
+                product("moisturizer", "Moisturizer", "moisturizer", 500).skin("normal").build(),
+                product("sunscreen", "Sunscreen", "sunscreen", 700).skin("normal").build(),
+                product("toner", "Unneeded Toner", "toner", 500).skin("normal").build()
+        ));
+        AssessmentRequest request = assessment("under-4000");
+        request.setRoutinePreference("advanced");
+
+        SkincareRoutine routine = optimizer.optimize(analysis("normal", "low", false, true), request);
+
+        assertThat(productIds(routine)).containsExactlyInAnyOrder("cleanser", "moisturizer", "sunscreen");
+        assertThat(routine.getExplanationMetadata()).anyMatch(note -> note.contains("filler products"));
+    }
+
+    @Test
+    void tenMlSunscreenIsRejectedInFavorOfVerifiedFullSize() {
+        RoutineOptimizer optimizer = optimizer(catalog(
+                product("cleanser", "Cleanser", "cleanser", 500).skin("normal").size(150, "ml").build(),
+                product("moisturizer", "Moisturizer", "moisturizer", 500).skin("normal").size(50, "ml").build(),
+                product("mini-sun", "Mini Sunscreen", "sunscreen", 200).skin("normal").size(10, "ml").ingredients("niacinamide").build(),
+                product("full-sun", "Full Sunscreen", "sunscreen", 900).skin("normal").size(50, "ml").build()
+        ));
+
+        SkincareRoutine routine = optimizer.optimize(analysis("normal", "low", false, true), assessment("under-4000"));
+
+        assertThat(productIds(routine)).contains("full-sun").doesNotContain("mini-sun");
+    }
+
+    @Test
+    void unknownSizeSunscreenCannotBeTreatedAsFullSize() {
+        RoutineOptimizer optimizer = optimizer(catalog(
+                product("cleanser", "Cleanser", "cleanser", 500).skin("normal").build(),
+                product("moisturizer", "Moisturizer", "moisturizer", 500).skin("normal").build(),
+                product("unknown-sun", "Unknown Sunscreen", "sunscreen", 500).skin("normal").sizeUnknown().build()
+        ));
+
+        SkincareRoutine routine = optimizer.optimize(analysis("normal", "low", false, true), assessment("under-4000"));
+
+        assertThat(routine.isComplete()).isFalse();
+        assertThat(routine.getFallbackMessage()).contains("full-size sunscreen");
+    }
+
+    @Test
+    void regularSunscreenUseCanAddOneCatalogFirstCleanserAndCountsItsCost() {
+        RoutineOptimizer optimizer = optimizer(catalog(
+                product("cleanser", "Cleanser", "cleanser", 500).skin("normal").build(),
+                product("moisturizer", "Moisturizer", "moisturizer", 500).skin("normal").build(),
+                product("sunscreen", "Sunscreen", "sunscreen", 700).skin("normal").build(),
+                product("cleansing-oil", "Cleansing Oil", "cleansing_oil", 800).skin("normal").size(200, "ml").build()
+        ));
+        AssessmentRequest request = assessment("under-4000");
+        request.setSunscreenUsage("always");
+
+        SkincareRoutine routine = optimizer.optimize(analysis("normal", "low", false, true), request);
+
+        assertThat(routine.getEvening()).extracting(RoutineProductStep::getStepName).contains("First Cleanse");
+        assertThat(productIds(routine)).contains("cleansing-oil");
+        assertThat(routine.getTotalCost()).isEqualByComparingTo("2500");
+    }
+
+    @Test
+    void doubleCleanseIsNotForcedWhenSunscreenUseIsNotRegular() {
+        RoutineOptimizer optimizer = optimizer(catalog(
+                product("cleanser", "Cleanser", "cleanser", 500).skin("normal").build(),
+                product("moisturizer", "Moisturizer", "moisturizer", 500).skin("normal").build(),
+                product("sunscreen", "Sunscreen", "sunscreen", 700).skin("normal").build(),
+                product("cleansing-oil", "Cleansing Oil", "cleansing_oil", 800).skin("normal").size(200, "ml").build()
+        ));
+
+        SkincareRoutine routine = optimizer.optimize(analysis("normal", "low", false, true), assessment("under-4000"));
+
+        assertThat(routine.getEvening()).extracting(RoutineProductStep::getStepName).doesNotContain("First Cleanse");
+    }
+
+    @Test
+    void exactSixThousandBelongsToFinalTierButNotUnderSixThousand() {
+        assertThat(BudgetRange.UNDER_6000.contains(BigDecimal.valueOf(6000))).isFalse();
+        assertThat(BudgetRange.ABOVE_6000.contains(BigDecimal.valueOf(6000))).isTrue();
+        assertThat(BudgetRange.UNDER_2000.contains(BigDecimal.valueOf(1999))).isTrue();
+        assertThat(BudgetRange.UNDER_4000.contains(BigDecimal.valueOf(3999))).isTrue();
     }
 
     private RoutineOptimizer optimizer(ProductCatalog catalog) {
@@ -158,6 +276,9 @@ class RoutineOptimizerTests {
         request.setBudget(budget);
         request.setFragranceFree("no");
         request.setCrueltyFree("no");
+        request.setConcerns(List.of("acne", "hyperpigmentation", "dark-spots", "redness", "fine-lines-wrinkles", "dull-skin"));
+        request.setRoutinePreference("minimal");
+        request.setSunscreenUsage("rarely");
         return request;
     }
 
@@ -201,6 +322,8 @@ class RoutineOptimizerTests {
             product.setCategory(category);
             product.setPrice(BigDecimal.valueOf(price));
             product.setCurrency("BDT");
+            product.setSizeValue(BigDecimal.valueOf(defaultSize(category)));
+            product.setSizeUnit("ml");
             product.setRetailer("Test");
             product.setProductUrl("https://example.com/" + id);
             product.setSourceProductUrl("https://example.com/" + id);
@@ -211,6 +334,26 @@ class RoutineOptimizerTests {
             product.setImageVerified(true);
             product.setIngredientsVerified(true);
             product.setReadyForRecommendation(true);
+        }
+
+        private static int defaultSize(String category) {
+            return switch (category) {
+                case "cleanser", "cleansing_oil", "cleansing_balm" -> 150;
+                case "moisturizer", "sunscreen" -> 50;
+                default -> 30;
+            };
+        }
+
+        private ProductBuilder size(int value, String unit) {
+            product.setSizeValue(BigDecimal.valueOf(value));
+            product.setSizeUnit(unit);
+            return this;
+        }
+
+        private ProductBuilder sizeUnknown() {
+            product.setSizeValue(null);
+            product.setSizeUnit(null);
+            return this;
         }
 
         private ProductBuilder skin(String... skinTypes) {

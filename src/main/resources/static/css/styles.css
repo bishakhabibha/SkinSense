@@ -1277,7 +1277,28 @@ h3 {
 }
 
 .timeline-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    max-height: calc(100vh - 116px);
     overflow: hidden;
+}
+
+.timeline-card > .card-heading {
+    flex: 0 0 auto;
+}
+
+.timeline-scroll {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    padding: 2px 8px 6px 0;
+}
+
+.timeline-scroll:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 3px;
 }
 
 .timeline-group + .timeline-group {
@@ -1414,6 +1435,10 @@ h3 {
         position: static;
     }
 
+    .timeline-card {
+        max-height: min(70vh, 640px);
+    }
+
     .product-card-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -1441,5 +1466,15 @@ h3 {
 
     .dashboard-hero h1 {
         font-size: clamp(2.15rem, 14vw, 3.4rem);
+    }
+
+    .timeline-card {
+        max-height: none;
+        overflow: visible;
+    }
+
+    .timeline-scroll {
+        overflow: visible;
+        padding-right: 0;
     }
 }

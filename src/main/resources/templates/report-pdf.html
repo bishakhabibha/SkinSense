@@ -236,8 +236,9 @@
             </div>
         </div>
         <div class="budget-status" th:if="${report.skincareRoutine != null}">
-            <p><strong>Your budget:</strong> <span th:text="${report.skincareRoutine.budgetRange.label}">BDT 2,000-BDT 4,000</span></p>
+            <p><strong>Your budget:</strong> <span th:text="${report.skincareRoutine.budgetRange.label}">Under ৳4,000</span></p>
             <p><strong>Routine total:</strong> <span th:text="${'৳' + report.skincareRoutine.totalCost}">৳3450</span></p>
+            <p><strong>Unique products to purchase:</strong> <span th:text="${report.skincareRoutine.uniqueProductCount}">3</span></p>
             <p th:if="${!report.skincareRoutine.exactBudgetFit}" th:text="${report.skincareRoutine.fallbackMessage}">No exact budget fit was found.</p>
         </div>
     </section>
@@ -258,6 +259,7 @@
                     <p><strong>Ingredients:</strong> <span th:text="${#strings.listJoin(step.product.keyIngredients, ', ')}">Ingredients</span></p>
                     <p><strong>Product:</strong> <span th:text="${step.brand + ' ' + step.productName}">Product</span></p>
                     <p><strong>Price:</strong> <span th:text="${'৳' + step.product.price}">৳1200</span></p>
+                    <p><strong>Verified size:</strong> <span th:text="${step.product.sizeLabel}">50 ml</span></p>
                     <p class="muted" th:text="${step.whyPicked}">Reasoning</p>
                 </div>
             </div>
@@ -273,6 +275,7 @@
                     <p><strong>Ingredients:</strong> <span th:text="${#strings.listJoin(step.product.keyIngredients, ', ')}">Ingredients</span></p>
                     <p><strong>Product:</strong> <span th:text="${step.brand + ' ' + step.productName}">Product</span></p>
                     <p><strong>Price:</strong> <span th:text="${'৳' + step.product.price}">৳1200</span></p>
+                    <p><strong>Verified size:</strong> <span th:text="${step.product.sizeLabel}">50 ml</span></p>
                     <p class="muted" th:text="${step.whyPicked}">Reasoning</p>
                 </div>
             </div>
@@ -308,6 +311,7 @@
                     <p><strong th:text="${step.brand}">Brand</strong></p>
                     <p><strong>Step:</strong> <span th:text="${step.stepName}">Cleanser</span></p>
                     <p><strong>Price:</strong> <span th:text="${'৳' + step.product.price}">৳1200</span></p>
+                    <p><strong>Verified size:</strong> <span th:text="${step.product.sizeLabel}">50 ml</span></p>
                     <p><strong>Key ingredients:</strong> <span th:text="${#strings.listJoin(step.product.keyIngredients, ', ')}">Ingredients</span></p>
                     <p class="muted" th:text="${step.whyPicked}">Reason</p>
                 </div>
