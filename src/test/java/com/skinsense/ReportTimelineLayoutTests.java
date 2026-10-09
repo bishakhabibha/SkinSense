@@ -17,9 +17,11 @@ class ReportTimelineLayoutTests {
         assertThat(template).contains("class=\"timeline-scroll\"")
                 .contains("tabindex=\"0\"")
                 .contains("Scrollable daily skincare steps");
-        assertThat(css).contains("max-height: calc(100vh - 116px)")
+        assertThat(css).contains(".dashboard-sidebar")
+                .contains("position: static")
+                .contains("max-height: calc(100vh - 116px)")
                 .contains(".timeline-scroll")
-                .contains("overflow-y: auto")
+                .contains("overflow-y: scroll")
                 .contains("min-height: 0")
                 .contains("scrollbar-gutter: stable");
     }

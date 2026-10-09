@@ -880,8 +880,8 @@ h3 {
 }
 
 .dashboard-sidebar {
-    position: sticky;
-    top: 86px;
+    position: static;
+    min-width: 0;
 }
 
 .dashboard-card,
@@ -1290,7 +1290,7 @@ h3 {
 
 .timeline-scroll {
     min-height: 0;
-    overflow-y: auto;
+    overflow-y: scroll;
     overscroll-behavior: contain;
     scrollbar-gutter: stable;
     padding: 2px 8px 6px 0;
